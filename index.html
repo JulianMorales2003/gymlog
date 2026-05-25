@@ -359,7 +359,7 @@ select:focus{outline:none;border-color:var(--green)}
       <div class="profile-card angela" onclick="login('angela')">
         <div class="profile-avatar">🌸</div>
         <div class="profile-name">Angela</div>
-        <div class="profile-tag">5 días</div>
+        <div class="profile-tag">Focus Gluteo</div>
       </div>
     </div>
   </div>
@@ -453,20 +453,19 @@ const tipoClsMap=TIPO_CLS;
 const RUTINAS={
   angela:[
     {id:1,nombre:'Día 1 — Glúteo y Cuádriceps',ejercicios:[
-      {id:11,nombre:'Hip thrust en máquina',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:11,nombre:'Hip thrust en smith(Bilateral)',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
       {id:12,nombre:'Aductores',repsRef:'8 mín',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:13,nombre:'Sentadilla Smith',repsRef:'8-10',series:[{tipo:'warmup'},{tipo:'warmup'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:14,nombre:'Abducción inclinación 30°',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:13,nombre:'Hacka',repsRef:'8-10',series:[{tipo:'warmup'},{tipo:'warmup'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:14,nombre:'Abductores',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
       {id:15,nombre:'Extensión de cuádriceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
       {id:16,nombre:'Sentadilla búlgara',repsRef:'Fallo',series:[{tipo:'fallo'},{tipo:'fallo'}]},
     ]},
     {id:2,nombre:'Día 2 — Pecho / Hombro / Tríceps',ejercicios:[
-      {id:21,nombre:'Press inclinado mancuernas',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:21,nombre:'Press plano en maquina',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
       {id:22,nombre:'Peck deck',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:23,nombre:'Press militar',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:24,nombre:'Elevaciones laterales',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:23,nombre:'Elevaciones laterales',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:24,nombre:'Press militar',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
       {id:25,nombre:'Extensión de tríceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:26,nombre:'Copa para tríceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
     ]},
     {id:3,nombre:'Día 3 — Cuádriceps e Isquiotibiales',ejercicios:[
       {id:31,nombre:'Curl tumbado',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
@@ -477,18 +476,18 @@ const RUTINAS={
     ]},
     {id:4,nombre:'Día 4 — Espalda / Bíceps',ejercicios:[
       {id:41,nombre:'Jalón al pecho',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:42,nombre:'Remo Gironda',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:43,nombre:'Jalón agarre supino',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:44,nombre:'Remo alto',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:45,nombre:'Curl de bíceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:42,nombre:'Remo alto',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:43,nombre:'Pull Over',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:44,nombre:'Curl de bíceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:45,nombre:'Curl martillo',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
     ]},
     {id:5,nombre:'Día 5 — Glúteo e Isquiotibiales',ejercicios:[
       {id:51,nombre:'Curl sentado',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:52,nombre:'Hip thrust en máquina',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:52,nombre:'Hip thrust en smith(Unilateral)',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
       {id:53,nombre:'Aductores',repsRef:'8 mín',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:54,nombre:'Abducción inclinación 30°',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:55,nombre:'Peso muerto rumano',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:56,nombre:'Curl martillo',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:54,nombre:'Abductores',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:55,nombre:'Peso muerto',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:56,nombre:'Patada de gluteo',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
     ]},
   ],
   julian:[
