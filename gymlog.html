@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GymLog — Mi Rutina</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;background:#111;color:#e8e8e8;min-height:100vh}
+  .page{max-width:860px;margin:0 auto;padding:1.5rem 1rem 3rem}
+
+  .top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:10px}
+  .logo{font-size:20px;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px}
+  .logo-icon{color:#1D9E75;font-size:22px}
+  .date-label{font-size:12px;color:#888}
+
+  .tab-bar{display:flex;border-bottom:1px solid #2a2a2a;margin-bottom:1.5rem}
+  .tab{padding:9px 18px;font-size:13px;cursor:pointer;color:#888;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;transition:color .15s}
+  .tab.active{color:#1D9E75;border-bottom-color:#1D9E75;font-weight:500}
+  .tab:hover{color:#ccc}
+  .section{display:none}.section.active{display:block}
+
+  .card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:14px 16px;margin-bottom:1rem}
+  .sel-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .sel-label{font-size:13px;font-weight:500;color:#e8e8e8;white-space:nowrap}
+
+  select{font-size:13px;padding:8px 12px;border:1px solid #333;border-radius:8px;background:#222;color:#e8e8e8;flex:1;min-width:200px;cursor:pointer}
+  select:focus{outline:none;border-color:#1D9E75}
+
+  .btn{padding:7px 14px;font-size:12px;border:1px solid #333;border-radius:8px;background:#1a1a1a;color:#e8e8e8;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s}
+  .btn:hover{background:#2a2a2a}
+  .btn-green{background:#1D9E75;color:#fff;border-color:#0F6E56}.btn-green:hover{background:#0F6E56}
+  .btn-sm{padding:3px 9px;font-size:11px}
+  .btn-ghost{border:none;background:none;color:#666;padding:2px 5px;cursor:pointer;font-size:13px;transition:color .15s}.btn-ghost:hover{color:#E24B4A}
+
+  .no-routine{text-align:center;padding:3rem 1rem;color:#555;font-size:14px}
+  .no-icon{font-size:40px;display:block;margin-bottom:10px}
+
+  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.25rem}
+  .stat-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:14px;text-align:center}
+  .stat-val{font-size:24px;font-weight:600;color:#fff}
+  .stat-lbl{font-size:11px;color:#666;margin-top:3px}
+
+  .ex-block{border:1px solid #2a2a2a;border-radius:12px;margin-bottom:12px;overflow:hidden;background:#1a1a1a}
+  .ex-title{padding:10px 14px;background:#222;font-size:13px;font-weight:500;color:#e8e8e8;display:flex;align-items:center;gap:8px;border-bottom:1px solid #2a2a2a}
+  .ex-title-icon{color:#1D9E75;font-size:13px}
+  .ex-meta{font-size:11px;font-weight:400;color:#666;margin-left:4px}
+
+  .series-table{width:100%;border-collapse:collapse;font-size:12px}
+  .series-table th{padding:7px 10px;text-align:left;font-size:11px;color:#666;font-weight:500;background:#1e1e1e;border-bottom:1px solid #2a2a2a}
+  .series-table td{padding:7px 10px;border-bottom:1px solid #222;vertical-align:top;color:#e8e8e8}
+  .series-table tr:last-child td{border-bottom:none}
+  .series-table tr:hover td{background:#1e1e1e}
+
+  .series-table input[type=number]{width:62px;padding:5px 6px;font-size:12px;border:1px solid #333;border-radius:6px;background:#111;color:#e8e8e8;text-align:center}
+  .series-table input[type=number]:focus{outline:none;border-color:#1D9E75}
+  .series-table textarea{width:100%;padding:5px 6px;font-size:11px;border:1px solid #333;border-radius:6px;background:#111;color:#e8e8e8;resize:none;height:34px}
+  .series-table textarea:focus{outline:none;border-color:#1D9E75}
+
+  .tipo-select{font-size:11px;padding:4px 8px;border-radius:20px;cursor:pointer;font-weight:500;border:1px solid}
+  .tipo-warmup{background:#0c2a3d;color:#5bb3e8;border-color:#1a4a6a}
+  .tipo-top{background:#0d2b1a;color:#4cba7a;border-color:#1a4a28}
+  .tipo-backoff{background:#2b1f08;color:#d4943a;border-color:#4a3010}
+  .tipo-normal{background:#222;color:#aaa;border-color:#333}
+  .tipo-fallo{background:#2b0d1a;color:#d45c8a;border-color:#4a1530}
+
+  .drop-zone{padding:4px 0 2px}
+  .drop-item{display:flex;align-items:center;gap:7px;margin-bottom:5px;padding:6px 10px;background:#111;border-radius:7px;border:1px solid #2a2a2a}
+  .drop-label{font-size:10px;font-weight:600;color:#d45c8a;white-space:nowrap;min-width:46px}
+  .drop-sep{font-size:11px;color:#555}
+  .drop-item input[type=number]{width:56px;font-size:11px;padding:4px 5px;border:1px solid #333;border-radius:5px;background:#1a1a1a;color:#e8e8e8;text-align:center}
+  .drop-item input:focus{outline:none;border-color:#d45c8a}
+  .add-drop-btn{font-size:11px;padding:3px 9px;color:#d45c8a;border-color:#4a1530;background:#2b0d1a;margin-top:2px}
+  .add-drop-btn:hover{background:#3a1020}
+
+  .plan-block{border:1px solid #2a2a2a;border-radius:12px;margin-bottom:12px;overflow:hidden}
+  .plan-header{padding:10px 14px;background:#222;font-size:13px;font-weight:500;color:#e8e8e8;display:flex;align-items:center;gap:8px;border-bottom:1px solid #2a2a2a}
+  .plan-table{width:100%;border-collapse:collapse;font-size:12px}
+  .plan-table th{padding:6px 14px;text-align:left;font-size:11px;color:#666;font-weight:500;background:#1a1a1a;border-bottom:1px solid #222}
+  .plan-table td{padding:8px 14px;border-bottom:1px solid #1e1e1e;color:#ccc}
+  .plan-table tr:last-child td{border-bottom:none}
+  .plan-table tr:hover td{background:#1e1e1e}
+  .num-cell{text-align:center;color:#666;width:60px}
+
+  .saved-toast{position:fixed;bottom:24px;right:24px;background:#1D9E75;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;display:none;z-index:999}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="top-bar">
+    <div>
+      <div class="logo">🏋️ GymLog</div>
+      <div class="date-label" id="todayChip"></div>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('log',this)">📅 Log del día</button>
+    <button class="tab" onclick="switchTab('plan',this)">📋 Plan completo</button>
+  </div>
+
+  <div id="sec-log" class="section active">
+    <div class="card">
+      <div class="sel-row">
+        <span class="sel-label">Día de hoy:</span>
+        <select id="routineSelect" onchange="loadRoutine()">
+          <option value="">— Selecciona el día —</option>
+        </select>
+        <button class="btn btn-green" onclick="guardar()">💾 Guardar</button>
+      </div>
+    </div>
+    <div id="logContent">
+      <div class="no-routine"><span class="no-icon">🏋️</span>Selecciona el día para comenzar</div>
+    </div>
+  </div>
+
+  <div id="sec-plan" class="section">
+    <div id="planContent"></div>
+  </div>
+
+</div>
+<div class="saved-toast" id="toast">✓ Sesión guardada</div>
+
+<script>
+const MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const DAYS_ES=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const now=new Date();
+document.getElementById('todayChip').textContent=DAYS_ES[now.getDay()]+', '+now.getDate()+' de '+MONTHS[now.getMonth()]+' '+now.getFullYear();
+
+const TIPO_OPTS=['normal','top','backoff','warmup','fallo'];
+const TIPO_LABELS={normal:'Serie',top:'Top set',backoff:'Back off',warmup:'Calentamiento',fallo:'Hasta el fallo'};
+const TIPO_CLS={normal:'tipo-normal',top:'tipo-top',backoff:'tipo-backoff',warmup:'tipo-warmup',fallo:'tipo-fallo'};
+
+const RUTINA=[
+  {id:1,nombre:'Día 1 — Glúteo y Cuádriceps',ejercicios:[
+    {id:11,nombre:'Hip thrust en máquina',repsRef:'8 a 15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:12,nombre:'Aductores',repsRef:'8 mín',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:13,nombre:'Sentadilla Smith',repsRef:'8 a 10',series:[{tipo:'warmup'},{tipo:'warmup'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:14,nombre:'Abducción con inclinación 30°',repsRef:'8 a 15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:15,nombre:'Extensión de cuádriceps',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:16,nombre:'Sentadilla búlgara',repsRef:'Fallo',series:[{tipo:'fallo'},{tipo:'fallo'}]},
+  ]},
+  {id:2,nombre:'Día 2 — Pecho / Hombro / Tríceps',ejercicios:[
+    {id:21,nombre:'Press inclinado con mancuernas',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:22,nombre:'Peck deck',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:23,nombre:'Press militar',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:24,nombre:'Elevaciones laterales',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:25,nombre:'Extensión de tríceps',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:26,nombre:'Copa para tríceps',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+  ]},
+  {id:3,nombre:'Día 3 — Cuádriceps e Isquiotibiales',ejercicios:[
+    {id:31,nombre:'Curl tumbado',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:32,nombre:'Aductores',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:33,nombre:'Prensa',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:34,nombre:'Extensión de cuádriceps',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:35,nombre:'Curl sentado',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+  ]},
+  {id:4,nombre:'Día 4 — Espalda / Bíceps',ejercicios:[
+    {id:41,nombre:'Jalón al pecho',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:42,nombre:'Remo Gironda',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:43,nombre:'Jalón al pecho agarre supino',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:44,nombre:'Remo alto',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:45,nombre:'Curl de bíceps',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+  ]},
+  {id:5,nombre:'Día 5 — Glúteo e Isquiotibiales',ejercicios:[
+    {id:51,nombre:'Curl sentado',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:52,nombre:'Hip thrust en máquina',repsRef:'8 a 15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:53,nombre:'Aductores',repsRef:'8 mín',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:54,nombre:'Abducción con inclinación 30°',repsRef:'8 a 15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:55,nombre:'Peso muerto rumano',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    {id:56,nombre:'Curl martillo',repsRef:'8 a 10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+  ]},
+];
+
+let sessionLog={};
+
+function loadLogs(){try{return JSON.parse(localStorage.getItem('gymlog_v1')||'{}')}catch(e){return{}}}
+function saveLogs(logs){try{localStorage.setItem('gymlog_v1',JSON.stringify(logs))}catch(e){}}
+
+function populateSelect(){
+  const sel=document.getElementById('routineSelect');
+  RUTINA.forEach(r=>{sel.innerHTML+=`<option value="${r.id}">${r.nombre}</option>`;});
+}
+
+function getLog(exId,si){
+  const k=exId+'_'+si;
+  if(!sessionLog[k])sessionLog[k]={tipo:null,peso:'',reps:'',comentario:'',drops:[]};
+  return sessionLog[k];
+}
+
+function loadRoutine(){
+  const id=parseInt(document.getElementById('routineSelect').value);
+  if(!id){document.getElementById('logContent').innerHTML='<div class="no-routine"><span class="no-icon">🏋️</span>Selecciona el día para comenzar</div>';return;}
+  const r=RUTINA.find(x=>x.id===id);
+  const dateKey=now.toISOString().slice(0,10)+'_'+id;
+  const logs=loadLogs();
+  sessionLog=logs[dateKey]?JSON.parse(JSON.stringify(logs[dateKey])):{};
+  renderLog(r);
+}
+
+function renderLog(r){
+  const totalSeries=r.ejercicios.reduce((a,e)=>a+e.series.length,0);
+  let html=`<div class="stats-row">
+    <div class="stat-card"><div class="stat-val">${r.ejercicios.length}</div><div class="stat-lbl">Ejercicios</div></div>
+    <div class="stat-card"><div class="stat-val">${totalSeries}</div><div class="stat-lbl">Series</div></div>
+    <div class="stat-card"><div class="stat-val" id="volTotal">0</div><div class="stat-lbl">Volumen kg</div></div>
+  </div>`;
+
+  r.ejercicios.forEach(ex=>{
+    html+=`<div class="ex-block">
+      <div class="ex-title"><span class="ex-title-icon">▸</span>${ex.nombre}<span class="ex-meta">${ex.series.length} series · ${ex.repsRef} reps</span></div>
+      <table class="series-table">
+        <thead><tr>
+          <th style="width:32px">#</th>
+          <th style="width:138px">Tipo</th>
+          <th style="width:70px">Peso kg</th>
+          <th style="width:62px">Reps</th>
+          <th>Drop sets</th>
+          <th style="width:115px">Comentario</th>
+        </tr></thead><tbody>`;
+    ex.series.forEach((s,si)=>{
+      const log=getLog(ex.id,si);
+      const tipo=log.tipo||s.tipo;
+      html+=`<tr>
+        <td style="text-align:center;color:#555;font-size:11px">${si+1}</td>
+        <td><select class="tipo-select ${TIPO_CLS[tipo]}" onchange="setTipo(${ex.id},${si},this)">
+          ${TIPO_OPTS.map(t=>`<option value="${t}"${t===tipo?' selected':''}>${TIPO_LABELS[t]}</option>`).join('')}
+        </select></td>
+        <td><input type="number" placeholder="—" min="0" step="0.5" value="${log.peso||''}" oninput="setField(${ex.id},${si},'peso',this.value)"></td>
+        <td><input type="number" placeholder="—" min="0" value="${log.reps||''}" oninput="setField(${ex.id},${si},'reps',this.value)"></td>
+        <td>
+          <div class="drop-zone" id="dzone_${ex.id}_${si}">
+            ${(log.drops||[]).map((d,di)=>dropHTML(ex.id,si,di,d)).join('')}
+          </div>
+          <button class="btn add-drop-btn" onclick="addDrop(${ex.id},${si})">+ drop</button>
+        </td>
+        <td><textarea placeholder="notas..." oninput="setField(${ex.id},${si},'comentario',this.value)">${log.comentario||''}</textarea></td>
+      </tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  });
+  document.getElementById('logContent').innerHTML=html;
+  calcVolume();
+}
+
+function dropHTML(exId,si,di,d){
+  return `<div class="drop-item" id="drop_${exId}_${si}_${di}">
+    <span class="drop-label">Drop ${di+1}</span>
+    <input type="number" placeholder="kg" min="0" step="0.5" value="${d.peso||''}" oninput="setDrop(${exId},${si},${di},'peso',this.value)">
+    <span class="drop-sep">×</span>
+    <input type="number" placeholder="reps" min="0" value="${d.reps||''}" oninput="setDrop(${exId},${si},${di},'reps',this.value)">
+    <button class="btn-ghost" onclick="removeDrop(${exId},${si},${di})" title="Eliminar">✕</button>
+  </div>`;
+}
+
+function addDrop(exId,si){
+  const log=getLog(exId,si);
+  if(!log.drops)log.drops=[];
+  const di=log.drops.length;
+  log.drops.push({peso:'',reps:''});
+  const zone=document.getElementById('dzone_'+exId+'_'+si);
+  const el=document.createElement('div');
+  el.innerHTML=dropHTML(exId,si,di,{});
+  zone.appendChild(el.firstElementChild);
+}
+
+function removeDrop(exId,si,di){
+  const log=getLog(exId,si);
+  log.drops.splice(di,1);
+  document.getElementById('dzone_'+exId+'_'+si).innerHTML=log.drops.map((d,i)=>dropHTML(exId,si,i,d)).join('');
+  calcVolume();
+}
+
+function setDrop(exId,si,di,field,val){
+  const log=getLog(exId,si);
+  if(!log.drops[di])log.drops[di]={};
+  log.drops[di][field]=val;
+  calcVolume();
+}
+
+function setField(exId,si,field,val){
+  getLog(exId,si)[field]=val;
+  calcVolume();
+}
+
+function setTipo(exId,si,sel){
+  getLog(exId,si).tipo=sel.value;
+  sel.className='tipo-select '+TIPO_CLS[sel.value];
+}
+
+function calcVolume(){
+  let vol=0;
+  Object.values(sessionLog).forEach(s=>{
+    if(s.peso&&s.reps)vol+=parseFloat(s.peso)*parseInt(s.reps);
+    (s.drops||[]).forEach(d=>{if(d.peso&&d.reps)vol+=parseFloat(d.peso)*parseInt(d.reps);});
+  });
+  const el=document.getElementById('volTotal');
+  if(el)el.textContent=Math.round(vol);
+}
+
+function guardar(){
+  const id=parseInt(document.getElementById('routineSelect').value);
+  if(!id)return;
+  const dateKey=now.toISOString().slice(0,10)+'_'+id;
+  const logs=loadLogs();
+  logs[dateKey]=JSON.parse(JSON.stringify(sessionLog));
+  saveLogs(logs);
+  const toast=document.getElementById('toast');
+  toast.style.display='block';
+  setTimeout(()=>{toast.style.display='none';},2200);
+}
+
+function renderPlan(){
+  let html='';
+  RUTINA.forEach(r=>{
+    html+=`<div class="plan-block">
+      <div class="plan-header">📅 ${r.nombre} <span style="font-size:11px;font-weight:400;color:#666;margin-left:4px">${r.ejercicios.length} ejercicios</span></div>
+      <table class="plan-table">
+        <thead><tr>
+          <th>Ejercicio</th>
+          <th class="num-cell">Series</th>
+          <th class="num-cell">Reps</th>
+        </tr></thead><tbody>`;
+    r.ejercicios.forEach(ex=>{
+      html+=`<tr><td>${ex.nombre}</td><td class="num-cell">${ex.series.length}</td><td class="num-cell">${ex.repsRef}</td></tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  });
+  document.getElementById('planContent').innerHTML=html;
+}
+
+function switchTab(t,el){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+t).classList.add('active');
+  el.classList.add('active');
+  if(t==='plan')renderPlan();
+}
+
+populateSelect();
+</script>
+</body>
+</html>
