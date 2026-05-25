@@ -256,17 +256,17 @@ function renderLog(r){
     <div class="stat-card"><div class="stat-val" id="volTotal">0</div><div class="stat-lbl">Volumen kg</div></div>
   </div>`;
   r.ejercicios.forEach((ex,ei)=>{
-    const openClass=ei===0?' open':'';
-    html+=`<div class="ex-block">
-      <div class="ex-header" onclick="toggleEx(this)">
+    const isOpen=ei===0;
+    html+=`<div class="ex-block" id="block_${ex.id}">
+      <div class="ex-header" onclick="toggleEx(${ex.id})">
         <div class="ex-header-left">
-          <span class="ex-chevron${openClass}">▶</span>
+          <span id="chev_${ex.id}" class="ex-chevron" style="display:inline-block;transition:transform .2s;${isOpen?'transform:rotate(90deg)':''}">▶</span>
           <span class="ex-nombre">${ex.nombre}</span>
           <span class="ex-meta">${ex.series.length} series · ${ex.repsRef}</span>
         </div>
         <button class="btn add-warmup-btn btn-sm" onclick="event.stopPropagation();addWarmup(${ex.id})">+ calentamiento</button>
       </div>
-      <div class="ex-body${openClass}">
+      <div id="body_${ex.id}" class="ex-body" style="display:${isOpen?'block':'none'}">
         <div class="table-wrap"><table class="series-table">
           <thead><tr>
             <th style="width:28px">#</th>
@@ -283,11 +283,11 @@ function renderLog(r){
   document.getElementById('logContent').innerHTML=html;
 }
 
-function toggleEx(header){
-  const chev=header.querySelector('.ex-chevron');
-  const body=header.nextElementSibling;
-  chev.classList.toggle('open');
-  body.classList.toggle('open');
+function toggleEx(exId){
+
+
+
+
 }
 
 function serieRowHTML(exId,si,tipo){
@@ -310,8 +310,8 @@ function addWarmup(exId){
   const tbody=document.getElementById('ex_'+exId);
   // open the block first
   const block=tbody.closest('.ex-block');
-  block.querySelector('.ex-body').classList.add('open');
-  block.querySelector('.ex-chevron').classList.add('open');
+  document.getElementById('body_'+exId).style.display='block';
+  document.getElementById('chev_'+exId).style.transform='rotate(90deg)';
   const rows=[...tbody.querySelectorAll('tr')];
   const newSi='w'+Date.now();
   const tr=document.createElement('tr');
@@ -515,7 +515,7 @@ async function verSesion(sesId,titulo){
 
 function toggleModalEx(header){
   const chev=header.querySelector('span');
-  const body=header.nextElementSibling;
+
   const isOpen=body.classList.toggle('open');
   chev.style.transform=isOpen?'rotate(90deg)':'rotate(0deg)';
 }
