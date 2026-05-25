@@ -275,6 +275,7 @@ function renderLog(r){
             <th style="width:56px">Reps</th>
             <th>Drop sets</th>
             <th style="width:110px">Comentario</th>
+            <th style="width:28px"></th>
           </tr></thead>
           <tbody id="ex_${ex.id}">`;
     ex.series.forEach((s,si)=>{html+=serieRowHTML(ex.id,si,s.tipo);});
@@ -303,6 +304,7 @@ function serieRowHTML(exId,si,tipo){
       <button class="btn add-drop-btn btn-sm" onclick="addDrop('${exId}','${si}')">+ drop</button>
     </td>
     <td><textarea placeholder="notas..."></textarea></td>
+    <td><button class="btn-ghost" style="color:#555;font-size:14px" onclick="eliminarFila(this)" title="Eliminar serie">✕</button></td>
   </tr>`;
 }
 
@@ -324,6 +326,14 @@ function addWarmup(exId){
   }
   if(!inserted)tbody.insertBefore(tr,rows[0]||null);
   renumberRows(tbody);
+}
+
+function eliminarFila(btn){
+  const row=btn.closest('tr');
+  const tbody=row.closest('tbody');
+  row.remove();
+  renumberRows(tbody);
+  calcVolume();
 }
 
 function renumberRows(tbody){
