@@ -359,7 +359,7 @@ select:focus{outline:none;border-color:var(--green)}
       <div class="profile-card angela" onclick="login('angela')">
         <div class="profile-avatar">🌸</div>
         <div class="profile-name">Angela</div>
-        <div class="profile-tag">5 días</div>
+        <div class="profile-tag">Focus Glúteo</div>
       </div>
     </div>
   </div>
@@ -453,20 +453,19 @@ const tipoClsMap=TIPO_CLS;
 const RUTINAS={
   angela:[
     {id:1,nombre:'Día 1 — Glúteo y Cuádriceps',ejercicios:[
-      {id:11,nombre:'Hip thrust en máquina',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:11,nombre:'Hip thrust en smith (Bilateral)',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
       {id:12,nombre:'Aductores',repsRef:'8 mín',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:13,nombre:'Sentadilla Smith',repsRef:'8-10',series:[{tipo:'warmup'},{tipo:'warmup'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:14,nombre:'Abducción inclinación 30°',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:13,nombre:'Hack squat',repsRef:'8-10',series:[{tipo:'warmup'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:14,nombre:'Abductores',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
       {id:15,nombre:'Extensión de cuádriceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
       {id:16,nombre:'Sentadilla búlgara',repsRef:'Fallo',series:[{tipo:'fallo'},{tipo:'fallo'}]},
     ]},
     {id:2,nombre:'Día 2 — Pecho / Hombro / Tríceps',ejercicios:[
-      {id:21,nombre:'Press inclinado mancuernas',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:21,nombre:'Press plano en máquina',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
       {id:22,nombre:'Peck deck',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:23,nombre:'Press militar',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:24,nombre:'Elevaciones laterales',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:23,nombre:'Elevaciones laterales',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:24,nombre:'Press militar',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
       {id:25,nombre:'Extensión de tríceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:26,nombre:'Copa para tríceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
     ]},
     {id:3,nombre:'Día 3 — Cuádriceps e Isquiotibiales',ejercicios:[
       {id:31,nombre:'Curl tumbado',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
@@ -477,18 +476,18 @@ const RUTINAS={
     ]},
     {id:4,nombre:'Día 4 — Espalda / Bíceps',ejercicios:[
       {id:41,nombre:'Jalón al pecho',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:42,nombre:'Remo Gironda',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:43,nombre:'Jalón agarre supino',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:44,nombre:'Remo alto',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:45,nombre:'Curl de bíceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:42,nombre:'Remo alto',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:43,nombre:'Pull over',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:44,nombre:'Curl de bíceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:45,nombre:'Curl martillo',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
     ]},
     {id:5,nombre:'Día 5 — Glúteo e Isquiotibiales',ejercicios:[
       {id:51,nombre:'Curl sentado',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:52,nombre:'Hip thrust en máquina',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:52,nombre:'Hip thrust en smith (Unilateral)',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
       {id:53,nombre:'Aductores',repsRef:'8 mín',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:54,nombre:'Abducción inclinación 30°',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:54,nombre:'Abductores',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
       {id:55,nombre:'Peso muerto rumano',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-      {id:56,nombre:'Curl martillo',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:56,nombre:'Patada de glúteo',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
     ]},
   ],
   julian:[
@@ -767,7 +766,7 @@ async function selectDay(dateStr){
   const el=document.querySelectorAll('.cal-grid .cal-day:not(.empty)')[day-1];
   if(el)el.classList.add('selected');
   const detail=document.getElementById('sessionDetail');
-  detail.innerHTML=`<div class="no-content" style="padding:1rem"><div class="spinner" style="margin:0 auto"></div></div>`;
+  detail.innerHTML='<div class="no-content" style="padding:1rem"><div class="spinner" style="margin:0 auto;width:20px;height:20px;border:2px solid #333;border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite"></div></div>';
   const{data,error}=await sb.from('sesiones').select('*').eq('usuario',currentUser).eq('fecha',dateStr).order('creado_at');
   if(error||!data||!data.length){detail.innerHTML=`<div class="no-content" style="padding:1rem">Sin sesiones el ${dateStr}</div>`;return;}
   let html=`<div style="font-size:11px;color:var(--text3);margin-bottom:10px;letter-spacing:.05em;padding:0 2px">${dateStr}</div>`;
@@ -779,28 +778,26 @@ async function selectDay(dateStr){
       <div style="padding:11px 14px;background:var(--bg4);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px">
         <div>
           <div style="font-size:13px;font-weight:500;color:var(--text)">${s.dia_nombre}</div>
-          <div style="font-size:10px;color:var(--text3);margin-top:2px;letter-spacing:.03em">${new Date(s.creado_at).toLocaleString('es')}</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:2px">${new Date(s.creado_at).toLocaleString('es')}</div>
         </div>
-        <div style="display:flex;gap:6px">
-          <span style="font-size:11px;color:var(--green);background:var(--green-dim);border:1px solid var(--green-border);padding:3px 10px;border-radius:20px">${Object.keys(grupos).length} ejercicios</span>
-        </div>
+        <span style="font-size:11px;color:var(--green);background:var(--green-dim);border:1px solid var(--green-border);padding:3px 10px;border-radius:20px">${Object.keys(grupos).length} ejercicios</span>
       </div>`;
     Object.entries(grupos).forEach(([nombre,srs],gi)=>{
       const isOpen=gi===0;
       html+=`<div style="border-top:1px solid var(--border)">
-        <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.exchev').style.transform=this.nextElementSibling.style.display==='block'?'rotate(90deg)':'rotate(0deg)'"
+        <div onclick="var b=this.nextElementSibling;var c=this.querySelector('.exchev');var open=b.style.display!=='none';b.style.display=open?'none':'block';c.style.transform=open?'rotate(0deg)':'rotate(90deg)'"
           style="padding:9px 14px;background:var(--bg3);display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none">
           <span class="exchev" style="font-size:10px;color:var(--text3);display:inline-block;transition:transform .2s;${isOpen?'transform:rotate(90deg)':''}">▶</span>
           <span style="font-size:12px;font-weight:500;color:var(--text);flex:1">${nombre}</span>
           <span style="font-size:10px;color:var(--text3)">${srs.length} series</span>
         </div>
         <div style="display:${isOpen?'block':'none'};overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;font-size:11px;min-width:360px">
+          <table style="width:100%;border-collapse:collapse;font-size:11px;min-width:340px">
             <thead><tr>
               <th style="padding:5px 8px;text-align:center;font-size:10px;color:var(--text3);background:var(--bg2);border-bottom:1px solid var(--border);width:24px">#</th>
               <th style="padding:5px 8px;text-align:left;font-size:10px;color:var(--text3);background:var(--bg2);border-bottom:1px solid var(--border);width:100px">Tipo</th>
-              <th style="padding:5px 8px;text-align:center;font-size:10px;color:var(--text3);background:var(--bg2);border-bottom:1px solid var(--border);width:55px">Peso</th>
-              <th style="padding:5px 8px;text-align:center;font-size:10px;color:var(--text3);background:var(--bg2);border-bottom:1px solid var(--border);width:45px">Reps</th>
+              <th style="padding:5px 8px;text-align:center;font-size:10px;color:var(--text3);background:var(--bg2);border-bottom:1px solid var(--border);width:50px">Peso</th>
+              <th style="padding:5px 8px;text-align:center;font-size:10px;color:var(--text3);background:var(--bg2);border-bottom:1px solid var(--border);width:44px">Reps</th>
               <th style="padding:5px 8px;text-align:left;font-size:10px;color:var(--text3);background:var(--bg2);border-bottom:1px solid var(--border)">Drops / Nota</th>
             </tr></thead>
             <tbody>`;
@@ -821,58 +818,6 @@ async function selectDay(dateStr){
   }
   detail.innerHTML=html;
 }
-
-async function verSesion(sesId,titulo){
-  const{data:series}=await sb.from('series_log').select('*,drop_sets(*)').eq('sesion_id',sesId).order('ejercicio_id').order('serie_index');
-  if(!series||!series.length){showToast('Sin datos','err');return;}
-  const grupos={};series.forEach(s=>{if(!grupos[s.ejercicio_nombre])grupos[s.ejercicio_nombre]=[];grupos[s.ejercicio_nombre].push(s);});
-  document.getElementById('modalTitle').textContent=titulo.toUpperCase();
-  let html='';
-  Object.entries(grupos).forEach(([nombre,srs],gi)=>{
-    const isOpen=gi===0;
-    html+=`<div class="modal-ex">
-      <div class="modal-ex-header" onclick="toggleModalEx(this)">
-        <span style="font-size:10px;color:var(--text3);transition:transform .2s;display:inline-block;${isOpen?'transform:rotate(90deg)':''}">▶</span>
-        <span style="font-size:13px;font-weight:500;color:var(--text);flex:1">${nombre}</span>
-        <span style="font-size:10px;color:var(--text3);letter-spacing:.04em">${srs.length} SERIES</span>
-      </div>
-      <div class="modal-ex-body${isOpen?' open':''}">
-        <table class="series-table"><thead><tr>
-          <th style="width:24px">#</th><th style="width:110px">Tipo</th>
-          <th style="width:58px">Peso</th><th style="width:52px">Reps</th>
-          <th>Drops</th><th>Nota</th>
-        </tr></thead><tbody>`;
-    srs.forEach((s,i)=>{
-      const drops=(s.drop_sets||[]).map((d,di)=>`<span style="font-size:10px;color:var(--pink);background:var(--pink-dim);padding:2px 5px;border-radius:4px;margin-right:2px;white-space:nowrap;display:inline-block;margin-bottom:2px">D${di+1}:${d.peso||'—'}×${d.reps||'—'}</span>`).join('');
-      html+=`<tr>
-        <td style="text-align:center;color:var(--text3);font-size:11px">${i+1}</td>
-        <td><span class="tipo-select ${TIPO_CLS[s.tipo]||'tipo-normal'}" style="cursor:default;display:inline-block">${TIPO_LABELS[s.tipo]||s.tipo}</span></td>
-        <td style="text-align:center">${s.peso||'—'}</td>
-        <td style="text-align:center">${s.reps||'—'}</td>
-        <td>${drops||'—'}</td>
-        <td style="color:var(--text3);font-size:11px">${s.comentario||''}</td>
-      </tr>`;
-    });
-    html+=`</tbody></table></div></div>`;
-  });
-  document.getElementById('modalBody').innerHTML=html;
-  document.getElementById('viewModal').classList.add('open');
-}
-
-function toggleModalEx(header){
-  const chev=header.querySelector('span');const body=header.nextElementSibling;
-  const isOpen=body.classList.toggle('open');chev.style.transform=isOpen?'rotate(90deg)':'rotate(0deg)';
-}
-
-async function eliminarSesion(sesId,dateStr){
-  if(!confirm('¿Eliminar esta sesión?'))return;
-  const{error}=await sb.from('sesiones').delete().eq('id',sesId);
-  if(error){showToast('Error al eliminar','err');return;}
-  showToast('Sesión eliminada','ok');sesionesDelMes=[];await renderCalendar();selectDay(dateStr);
-}
-
-function cerrarModal(){document.getElementById('viewModal').classList.remove('open');}
-document.getElementById('viewModal').onclick=function(e){if(e.target===this)cerrarModal();};
 
 function cambiarMes(dir){
   calMonth+=dir;
