@@ -16,11 +16,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .tab-bar{display:flex;border-bottom:1px solid #2a2a2a;margin-bottom:1.5rem;overflow-x:auto}
 .tab{padding:9px 18px;font-size:13px;cursor:pointer;color:#888;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap}
 .tab.active{color:#1D9E75;border-bottom-color:#1D9E75;font-weight:500}
-.tab:hover{color:#ccc}
 .section{display:none}.section.active{display:block}
 .card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:14px 16px;margin-bottom:1rem}
-select,input[type=text],input[type=date]{font-size:13px;padding:8px 12px;border:1px solid #333;border-radius:8px;background:#222;color:#e8e8e8}
-select:focus,input:focus{outline:none;border-color:#1D9E75}
+select{font-size:13px;padding:8px 12px;border:1px solid #333;border-radius:8px;background:#222;color:#e8e8e8}
+select:focus{outline:none;border-color:#1D9E75}
 .btn{padding:7px 14px;font-size:12px;border:1px solid #333;border-radius:8px;background:#1a1a1a;color:#e8e8e8;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .btn:hover{background:#2a2a2a}
 .btn-green{background:#1D9E75;color:#fff;border-color:#0F6E56}.btn-green:hover{background:#0F6E56}
@@ -32,17 +31,26 @@ select:focus,input:focus{outline:none;border-color:#1D9E75}
 .stat-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:14px;text-align:center}
 .stat-val{font-size:24px;font-weight:600;color:#fff}
 .stat-lbl{font-size:11px;color:#666;margin-top:3px}
-.ex-block{border:1px solid #2a2a2a;border-radius:12px;margin-bottom:12px;overflow:hidden;background:#1a1a1a}
-.ex-title{padding:10px 14px;background:#222;font-size:13px;font-weight:500;color:#e8e8e8;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2a2a2a;flex-wrap:wrap;gap:6px}
-.ex-title-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.ex-meta{font-size:11px;font-weight:400;color:#666}
+
+/* Ejercicio colapsable */
+.ex-block{border:1px solid #2a2a2a;border-radius:12px;margin-bottom:10px;overflow:hidden;background:#1a1a1a}
+.ex-header{padding:12px 14px;background:#222;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;gap:8px;flex-wrap:wrap}
+.ex-header:hover{background:#282828}
+.ex-header-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.ex-chevron{font-size:12px;color:#666;transition:transform .2s;flex-shrink:0}
+.ex-chevron.open{transform:rotate(90deg)}
+.ex-nombre{font-size:13px;font-weight:500;color:#e8e8e8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ex-meta{font-size:11px;color:#666;white-space:nowrap}
+.ex-body{display:none;border-top:1px solid #2a2a2a}
+.ex-body.open{display:block}
+.ex-actions{padding:8px 14px;background:#1e1e1e;border-bottom:1px solid #2a2a2a;display:flex;gap:8px}
 .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.series-table{width:100%;border-collapse:collapse;font-size:12px;min-width:520px}
+.series-table{width:100%;border-collapse:collapse;font-size:12px;min-width:500px}
 .series-table th{padding:7px 8px;text-align:left;font-size:11px;color:#666;font-weight:500;background:#1e1e1e;border-bottom:1px solid #2a2a2a}
 .series-table td{padding:6px 8px;border-bottom:1px solid #1e1e1e;vertical-align:top;color:#e8e8e8}
 .series-table tr:last-child td{border-bottom:none}
 .series-table tr:hover td{background:#1e1e1e}
-.series-table input[type=number]{width:60px;padding:5px 4px;font-size:12px;border:1px solid #333;border-radius:6px;background:#111;color:#e8e8e8;text-align:center}
+.series-table input[type=number]{width:58px;padding:5px 4px;font-size:12px;border:1px solid #333;border-radius:6px;background:#111;color:#e8e8e8;text-align:center}
 .series-table input[type=number]:focus{outline:none;border-color:#1D9E75}
 .series-table textarea{width:100%;padding:5px 6px;font-size:11px;border:1px solid #333;border-radius:6px;background:#111;color:#e8e8e8;resize:none;height:34px}
 .series-table textarea:focus{outline:none;border-color:#1D9E75}
@@ -53,12 +61,14 @@ select:focus,input:focus{outline:none;border-color:#1D9E75}
 .tipo-normal{background:#222;color:#aaa;border-color:#333}
 .tipo-fallo{background:#2b0d1a;color:#d45c8a;border-color:#4a1530}
 .drop-zone{padding:4px 0 2px}
-.drop-item{display:flex;align-items:center;gap:6px;margin-bottom:4px;padding:5px 8px;background:#111;border-radius:7px;border:1px solid #2a2a2a;flex-wrap:nowrap}
+.drop-item{display:flex;align-items:center;gap:6px;margin-bottom:4px;padding:5px 8px;background:#111;border-radius:7px;border:1px solid #2a2a2a}
 .drop-label{font-size:10px;font-weight:600;color:#d45c8a;white-space:nowrap;min-width:42px}
 .drop-sep{font-size:11px;color:#555}
-.drop-item input[type=number]{width:52px;font-size:11px;padding:3px 4px;border:1px solid #333;border-radius:5px;background:#1a1a1a;color:#e8e8e8;text-align:center}
+.drop-item input[type=number]{width:50px;font-size:11px;padding:3px 4px;border:1px solid #333;border-radius:5px;background:#1a1a1a;color:#e8e8e8;text-align:center}
 .add-drop-btn{font-size:11px;padding:3px 8px;color:#d45c8a;border-color:#4a1530;background:#2b0d1a}.add-drop-btn:hover{background:#3a1020}
 .add-warmup-btn{font-size:11px;padding:3px 8px;color:#5bb3e8;border-color:#1a4a6a;background:#0c2a3d}.add-warmup-btn:hover{background:#0f3550}
+
+/* Calendario */
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:1rem}
 .cal-header{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
 .cal-day-name{text-align:center;font-size:11px;color:#666;padding:4px 0;font-weight:500}
@@ -66,7 +76,6 @@ select:focus,input:focus{outline:none;border-color:#1D9E75}
 .cal-day:hover{border-color:#333;color:#e8e8e8}
 .cal-day.has-session{background:#0d2b1a;border-color:#1a4a28;color:#4cba7a}
 .cal-day.today{border-color:#1D9E75;color:#1D9E75;font-weight:600}
-.cal-day.today.has-session{background:#0d2b1a}
 .cal-day.selected{background:#1D9E75;color:#fff;border-color:#1D9E75}
 .cal-day.empty{cursor:default;background:transparent;border:none}
 .cal-dot{width:5px;height:5px;border-radius:50%;background:#4cba7a}
@@ -74,22 +83,33 @@ select:focus,input:focus{outline:none;border-color:#1D9E75}
 .cal-nav-title{font-size:15px;font-weight:500;color:#e8e8e8}
 .session-list{display:flex;flex-direction:column;gap:8px}
 .session-item{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.session-info{flex:1}
-.session-date{font-size:13px;font-weight:500;color:#e8e8e8}
+.session-date-title{font-size:13px;font-weight:500;color:#e8e8e8}
 .session-sub{font-size:11px;color:#666;margin-top:2px}
 .session-actions{display:flex;gap:6px}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;display:none;z-index:999;white-space:nowrap}
-.toast-ok{background:#1D9E75;color:#fff}
-.toast-err{background:#8b2020;color:#fff}
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;align-items:flex-start;justify-content:center;overflow-y:auto;padding:1rem}
+
+/* Modal con scroll interno */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;align-items:flex-start;justify-content:center;padding:1rem}
 .modal-bg.open{display:flex}
-.modal{background:#1a1a1a;border:1px solid #333;border-radius:14px;padding:1.5rem;width:100%;max-width:600px;margin:auto}
-.modal h3{font-size:15px;font-weight:500;color:#e8e8e8;margin-bottom:1rem}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem}
-.saving-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;font-size:15px;color:#fff;gap:12px}
+.modal{background:#1a1a1a;border:1px solid #333;border-radius:14px;width:100%;max-width:640px;margin:auto;display:flex;flex-direction:column;max-height:90vh}
+.modal-header{padding:1rem 1.25rem;border-bottom:1px solid #2a2a2a;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-header h3{font-size:15px;font-weight:500;color:#e8e8e8}
+.modal-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1rem 1.25rem;flex:1}
+.modal-footer{padding:.75rem 1.25rem;border-top:1px solid #2a2a2a;display:flex;justify-content:flex-end;flex-shrink:0}
+
+/* Ejercicio colapsable en modal */
+.modal-ex{border:1px solid #2a2a2a;border-radius:10px;margin-bottom:8px;overflow:hidden}
+.modal-ex-header{padding:10px 12px;background:#222;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.modal-ex-header:hover{background:#282828}
+.modal-ex-body{display:none;overflow-x:auto}
+.modal-ex-body.open{display:block}
+
+.saving-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center;font-size:15px;color:#fff;gap:12px}
 .saving-overlay.show{display:flex}
 .spinner{width:20px;height:20px;border:2px solid #333;border-top-color:#1D9E75;border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;display:none;z-index:999}
+.toast-ok{background:#1D9E75;color:#fff}
+.toast-err{background:#8b2020;color:#fff}
 </style>
 </head>
 <body>
@@ -137,25 +157,24 @@ select:focus,input:focus{outline:none;border-color:#1D9E75}
     <div id="sessionDetail"><div class="no-content" style="padding:1rem">Selecciona un día del calendario</div></div>
   </div>
 
-  <div id="sec-plan" class="section">
-    <div id="planContent"></div>
-  </div>
+  <div id="sec-plan" class="section"><div id="planContent"></div></div>
 </div>
 
-<div class="modal-bg" id="editModal">
+<!-- MODAL VER SESIÓN -->
+<div class="modal-bg" id="viewModal">
   <div class="modal">
-    <h3>👁 Detalle de sesión</h3>
-    <div id="editModalContent" style="overflow-x:auto"></div>
-    <div class="modal-actions">
+    <div class="modal-header">
+      <h3 id="modalTitle">👁 Detalle de sesión</h3>
+      <button class="btn-ghost" onclick="cerrarModal()" style="font-size:18px">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
       <button class="btn" onclick="cerrarModal()">Cerrar</button>
     </div>
   </div>
 </div>
 
-<div class="saving-overlay" id="savingOverlay">
-  <div class="spinner"></div> Guardando sesión...
-</div>
-
+<div class="saving-overlay" id="savingOverlay"><div class="spinner"></div> Guardando...</div>
 <div class="toast toast-ok" id="toastOk"></div>
 <div class="toast toast-err" id="toastErr"></div>
 
@@ -172,6 +191,7 @@ document.getElementById('todayLabel').textContent=DAYS_ES[now.getDay()]+', '+now
 const TIPO_OPTS=['warmup','normal','top','backoff','fallo'];
 const TIPO_LABELS={warmup:'Calentamiento',normal:'Serie',top:'Top set',backoff:'Back off',fallo:'Fallo'};
 const TIPO_CLS={warmup:'tipo-warmup',normal:'tipo-normal',top:'tipo-top',backoff:'tipo-backoff',fallo:'tipo-fallo'};
+const tipoClsMap=TIPO_CLS;
 
 const RUTINA=[
   {id:1,nombre:'Día 1 — Glúteo y Cuádriceps',ejercicios:[
@@ -214,9 +234,7 @@ const RUTINA=[
   ]},
 ];
 
-let calYear=now.getFullYear();
-let calMonth=now.getMonth();
-let sesionesDelMes=[];
+let calYear=now.getFullYear(),calMonth=now.getMonth(),sesionesDelMes=[];
 
 function populateSelect(){
   const sel=document.getElementById('routineSelect');
@@ -237,26 +255,39 @@ function renderLog(r){
     <div class="stat-card"><div class="stat-val">${totalSeries}</div><div class="stat-lbl">Series</div></div>
     <div class="stat-card"><div class="stat-val" id="volTotal">0</div><div class="stat-lbl">Volumen kg</div></div>
   </div>`;
-  r.ejercicios.forEach(ex=>{
+  r.ejercicios.forEach((ex,ei)=>{
+    const openClass=ei===0?' open':'';
     html+=`<div class="ex-block">
-      <div class="ex-title">
-        <div class="ex-title-left">▸ <span>${ex.nombre}</span> <span class="ex-meta">${ex.series.length} series · ${ex.repsRef}</span></div>
-        <button class="btn add-warmup-btn btn-sm" onclick="addWarmup(${ex.id})">+ calentamiento</button>
+      <div class="ex-header" onclick="toggleEx(this)">
+        <div class="ex-header-left">
+          <span class="ex-chevron${openClass}">▶</span>
+          <span class="ex-nombre">${ex.nombre}</span>
+          <span class="ex-meta">${ex.series.length} series · ${ex.repsRef}</span>
+        </div>
+        <button class="btn add-warmup-btn btn-sm" onclick="event.stopPropagation();addWarmup(${ex.id})">+ calentamiento</button>
       </div>
-      <div class="table-wrap"><table class="series-table">
-        <thead><tr>
-          <th style="width:28px">#</th>
-          <th style="width:130px">Tipo</th>
-          <th style="width:66px">Peso kg</th>
-          <th style="width:58px">Reps</th>
-          <th>Drop sets</th>
-          <th style="width:110px">Comentario</th>
-        </tr></thead>
-        <tbody id="ex_${ex.id}">`;
+      <div class="ex-body${openClass}">
+        <div class="table-wrap"><table class="series-table">
+          <thead><tr>
+            <th style="width:28px">#</th>
+            <th style="width:128px">Tipo</th>
+            <th style="width:64px">Peso kg</th>
+            <th style="width:56px">Reps</th>
+            <th>Drop sets</th>
+            <th style="width:110px">Comentario</th>
+          </tr></thead>
+          <tbody id="ex_${ex.id}">`;
     ex.series.forEach((s,si)=>{html+=serieRowHTML(ex.id,si,s.tipo);});
-    html+=`</tbody></table></div></div>`;
+    html+=`</tbody></table></div></div></div>`;
   });
   document.getElementById('logContent').innerHTML=html;
+}
+
+function toggleEx(header){
+  const chev=header.querySelector('.ex-chevron');
+  const body=header.nextElementSibling;
+  chev.classList.toggle('open');
+  body.classList.toggle('open');
 }
 
 function serieRowHTML(exId,si,tipo){
@@ -275,10 +306,12 @@ function serieRowHTML(exId,si,tipo){
   </tr>`;
 }
 
-const tipoClsMap={warmup:'tipo-warmup',normal:'tipo-normal',top:'tipo-top',backoff:'tipo-backoff',fallo:'tipo-fallo'};
-
 function addWarmup(exId){
   const tbody=document.getElementById('ex_'+exId);
+  // open the block first
+  const block=tbody.closest('.ex-block');
+  block.querySelector('.ex-body').classList.add('open');
+  block.querySelector('.ex-chevron').classList.add('open');
   const rows=[...tbody.querySelectorAll('tr')];
   const newSi='w'+Date.now();
   const tr=document.createElement('tr');
@@ -320,22 +353,19 @@ function addDrop(exId,si){
 
 function renumDrops(exId,si){
   const zone=document.getElementById('dzone_'+exId+'_'+si);
-  if(!zone)return;
-  zone.querySelectorAll('.drop-label').forEach((l,i)=>l.textContent='Drop '+(i+1));
+  if(zone)zone.querySelectorAll('.drop-label').forEach((l,i)=>l.textContent='Drop '+(i+1));
   calcVolume();
 }
 
 function calcVolume(){
   let vol=0;
   document.querySelectorAll('#logContent tbody tr').forEach(row=>{
-    const ins=row.querySelectorAll('input[type=number]');
-    const peso=parseFloat(ins[0]?.value)||0;
-    const reps=parseInt(ins[1]?.value)||0;
-    if(peso&&reps)vol+=peso*reps;
+    const ins=row.querySelectorAll('td > input[type=number]');
+    const p=parseFloat(ins[0]?.value)||0,r=parseInt(ins[1]?.value)||0;
+    if(p&&r)vol+=p*r;
     row.querySelectorAll('.drop-item').forEach(d=>{
-      const dins=d.querySelectorAll('input[type=number]');
-      const dp=parseFloat(dins[0]?.value)||0;
-      const dr=parseInt(dins[1]?.value)||0;
+      const di=d.querySelectorAll('input[type=number]');
+      const dp=parseFloat(di[0]?.value)||0,dr=parseInt(di[1]?.value)||0;
       if(dp&&dr)vol+=dp*dr;
     });
   });
@@ -348,14 +378,13 @@ async function guardarSesion(){
   if(!diaId){showToast('Selecciona un día primero','err');return;}
   const r=RUTINA.find(x=>x.id===diaId);
   const fecha=now.toISOString().slice(0,10);
-
   const series=[];
   r.ejercicios.forEach(ex=>{
     const tbody=document.getElementById('ex_'+ex.id);
     if(!tbody)return;
     [...tbody.querySelectorAll('tr')].forEach((row,si)=>{
       const sel=row.querySelector('.tipo-select');
-      const ins=row.querySelectorAll('input[type=number]');
+      const ins=row.querySelectorAll('td > input[type=number]');
       const ta=row.querySelector('textarea');
       const tipo=sel?sel.value:'normal';
       const peso=parseFloat(ins[0]?.value)||null;
@@ -369,7 +398,6 @@ async function guardarSesion(){
       series.push({ejercicio_id:ex.id,ejercicio_nombre:ex.nombre,serie_index:si,tipo,peso,reps,comentario,es_calentamiento:tipo==='warmup',drops});
     });
   });
-
   document.getElementById('savingOverlay').classList.add('show');
   try{
     const{data:sesData,error:sesErr}=await sb.from('sesiones').insert({fecha,dia_id:diaId,dia_nombre:r.nombre}).select().single();
@@ -382,15 +410,12 @@ async function guardarSesion(){
         comentario:s.comentario,es_calentamiento:s.es_calentamiento
       }).select().single();
       if(sErr)throw sErr;
-      if(s.drops.length){
-        await sb.from('drop_sets').insert(s.drops.map(d=>({...d,serie_id:sData.id})));
-      }
+      if(s.drops.length)await sb.from('drop_sets').insert(s.drops.map(d=>({...d,serie_id:sData.id})));
     }
-    // ── REINICIAR después de guardar ──
     document.getElementById('routineSelect').value='';
     document.getElementById('logContent').innerHTML='<div class="no-content">✅ Sesión guardada. Selecciona el próximo día cuando quieras.</div>';
     sesionesDelMes=[];
-    showToast('✓ Sesión guardada correctamente','ok');
+    showToast('✓ Sesión guardada','ok');
   }catch(e){
     console.error(e);
     showToast('Error: '+e.message,'err');
@@ -420,10 +445,8 @@ async function renderCalendar(){
   for(let i=0;i<firstDay;i++)html+=`<div class="cal-day empty"></div>`;
   for(let d=1;d<=daysInMonth;d++){
     const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const hasSes=!!sesMap[ds];
-    const isToday=ds===todayStr;
-    let cls='cal-day'+(hasSes?' has-session':'')+(isToday?' today':'');
-    html+=`<div class="${cls}" onclick="selectDay('${ds}')">${d}${hasSes?'<div class="cal-dot"></div>':''}</div>`;
+    let cls='cal-day'+(sesMap[ds]?' has-session':'')+(ds===todayStr?' today':'');
+    html+=`<div class="${cls}" onclick="selectDay('${ds}')">${d}${sesMap[ds]?'<div class="cal-dot"></div>':''}</div>`;
   }
   document.getElementById('calGrid').innerHTML=html;
 }
@@ -436,15 +459,15 @@ async function selectDay(dateStr){
   const{data,error}=await sb.from('sesiones').select('*').eq('fecha',dateStr).order('creado_at');
   const detail=document.getElementById('sessionDetail');
   if(error||!data||!data.length){detail.innerHTML=`<div class="no-content" style="padding:1rem">Sin sesiones el ${dateStr}</div>`;return;}
-  let html=`<div style="font-size:12px;color:#888;margin-bottom:8px;padding:0 2px">${dateStr}</div><div class="session-list">`;
+  let html=`<div style="font-size:12px;color:#888;margin-bottom:8px">${dateStr}</div><div class="session-list">`;
   data.forEach(s=>{
     html+=`<div class="session-item">
-      <div class="session-info">
-        <div class="session-date">${s.dia_nombre}</div>
+      <div>
+        <div class="session-date-title">${s.dia_nombre}</div>
         <div class="session-sub">${new Date(s.creado_at).toLocaleString('es')}</div>
       </div>
       <div class="session-actions">
-        <button class="btn btn-sm" onclick="verSesion('${s.id}')">👁 Ver</button>
+        <button class="btn btn-sm" onclick="verSesion('${s.id}','${s.dia_nombre}')">👁 Ver</button>
         <button class="btn btn-sm btn-red" onclick="eliminarSesion('${s.id}','${dateStr}')">🗑</button>
       </div>
     </div>`;
@@ -452,22 +475,29 @@ async function selectDay(dateStr){
   detail.innerHTML=html+'</div>';
 }
 
-async function verSesion(sesId){
+async function verSesion(sesId,titulo){
   const{data:series}=await sb.from('series_log').select('*,drop_sets(*)').eq('sesion_id',sesId).order('ejercicio_id').order('serie_index');
   if(!series||!series.length){showToast('Sin datos','err');return;}
   const grupos={};
   series.forEach(s=>{if(!grupos[s.ejercicio_nombre])grupos[s.ejercicio_nombre]=[];grupos[s.ejercicio_nombre].push(s);});
+  document.getElementById('modalTitle').textContent='👁 '+titulo;
   let html='';
-  Object.entries(grupos).forEach(([nombre,srs])=>{
-    html+=`<div class="ex-block" style="margin-bottom:10px">
-      <div class="ex-title"><div class="ex-title-left">▸ ${nombre}</div></div>
-      <div style="overflow-x:auto"><table class="series-table"><thead><tr>
-        <th style="width:28px">#</th><th style="width:110px">Tipo</th>
-        <th style="width:66px">Peso kg</th><th style="width:58px">Reps</th>
-        <th>Drops</th><th>Comentario</th>
-      </tr></thead><tbody>`;
+  Object.entries(grupos).forEach(([nombre,srs],gi)=>{
+    const openClass=gi===0?' open':'';
+    html+=`<div class="modal-ex">
+      <div class="modal-ex-header" onclick="toggleModalEx(this)">
+        <span style="font-size:11px;color:#666;margin-right:4px;transition:transform .2s${openClass?';transform:rotate(90deg)':''}">▶</span>
+        <span style="font-size:13px;font-weight:500;color:#e8e8e8;flex:1">${nombre}</span>
+        <span style="font-size:11px;color:#666">${srs.length} series</span>
+      </div>
+      <div class="modal-ex-body${openClass}">
+        <table class="series-table"><thead><tr>
+          <th style="width:28px">#</th><th style="width:110px">Tipo</th>
+          <th style="width:64px">Peso kg</th><th style="width:56px">Reps</th>
+          <th>Drops</th><th>Comentario</th>
+        </tr></thead><tbody>`;
     srs.forEach((s,i)=>{
-      const drops=(s.drop_sets||[]).map((d,di)=>`<span style="font-size:10px;color:#d45c8a;background:#2b0d1a;padding:2px 6px;border-radius:4px;margin-right:3px;white-space:nowrap">Drop ${di+1}: ${d.peso||'—'}kg×${d.reps||'—'}</span>`).join('');
+      const drops=(s.drop_sets||[]).map((d,di)=>`<span style="font-size:10px;color:#d45c8a;background:#2b0d1a;padding:2px 6px;border-radius:4px;margin-right:3px;white-space:nowrap;display:inline-block;margin-bottom:2px">Drop ${di+1}: ${d.peso||'—'}kg×${d.reps||'—'}</span>`).join('');
       html+=`<tr>
         <td style="text-align:center;color:#555;font-size:11px">${i+1}</td>
         <td><span class="tipo-select ${TIPO_CLS[s.tipo]||'tipo-normal'}" style="cursor:default;display:inline-block">${TIPO_LABELS[s.tipo]||s.tipo}</span></td>
@@ -479,8 +509,15 @@ async function verSesion(sesId){
     });
     html+=`</tbody></table></div></div>`;
   });
-  document.getElementById('editModalContent').innerHTML=html;
-  document.getElementById('editModal').classList.add('open');
+  document.getElementById('modalBody').innerHTML=html;
+  document.getElementById('viewModal').classList.add('open');
+}
+
+function toggleModalEx(header){
+  const chev=header.querySelector('span');
+  const body=header.nextElementSibling;
+  const isOpen=body.classList.toggle('open');
+  chev.style.transform=isOpen?'rotate(90deg)':'rotate(0deg)';
 }
 
 async function eliminarSesion(sesId,dateStr){
@@ -493,15 +530,14 @@ async function eliminarSesion(sesId,dateStr){
   selectDay(dateStr);
 }
 
-function cerrarModal(){document.getElementById('editModal').classList.remove('open');}
-document.getElementById('editModal').onclick=function(e){if(e.target===this)cerrarModal();};
+function cerrarModal(){document.getElementById('viewModal').classList.remove('open');}
+document.getElementById('viewModal').onclick=function(e){if(e.target===this)cerrarModal();};
 
 function cambiarMes(dir){
   calMonth+=dir;
   if(calMonth<0){calMonth=11;calYear--;}
   if(calMonth>11){calMonth=0;calYear++;}
-  sesionesDelMes=[];
-  renderCalendar();
+  sesionesDelMes=[];renderCalendar();
   document.getElementById('sessionDetail').innerHTML=`<div class="no-content" style="padding:1rem">Selecciona un día del calendario</div>`;
 }
 
