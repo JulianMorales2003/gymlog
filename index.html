@@ -2,143 +2,178 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GymLog — Mi Rutina</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>GymLog</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;background:#111;color:#e8e8e8}
 .page{max-width:900px;margin:0 auto;padding:1.5rem 1rem 4rem}
+
+/* LOGIN */
+.login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem;gap:1.5rem}
+.login-logo{font-size:28px;font-weight:700;color:#fff;margin-bottom:.5rem}
+.login-sub{font-size:13px;color:#666;margin-top:-1rem}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:360px}
+.profile-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:16px;padding:1.5rem 1rem;display:flex;flex-direction:column;align-items:center;gap:12px;cursor:pointer;transition:border-color .2s,background .2s}
+.profile-card:hover{border-color:#1D9E75;background:#1e2e28}
+.profile-avatar{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid #333}
+.profile-name{font-size:14px;font-weight:600;color:#e8e8e8}
+.profile-days{font-size:11px;color:#666}
+.avatar-julian{background:#0d2b1a;border-color:#1a4a28}
+.avatar-angela{background:#2b0d1a;border-color:#4a1530}
+
+/* APP */
+.app-screen{display:none}
+.app-screen.active{display:block}
 .top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:10px}
-.logo{font-size:20px;font-weight:600;color:#fff}
+.logo{font-size:18px;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px}
+.user-badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
+.badge-julian{background:#0d2b1a;color:#4cba7a;border:1px solid #1a4a28}
+.badge-angela{background:#2b0d1a;color:#d45c8a;border:1px solid #4a1530}
+.logout-btn{font-size:11px;padding:4px 10px;border:1px solid #333;border-radius:8px;background:none;color:#666;cursor:pointer}
+.logout-btn:hover{color:#e8e8e8;border-color:#555}
 .date-label{font-size:12px;color:#888;margin-top:2px}
 .tab-bar{display:flex;border-bottom:1px solid #2a2a2a;margin-bottom:1.5rem;overflow-x:auto}
-.tab{padding:9px 18px;font-size:13px;cursor:pointer;color:#888;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap}
+.tab{padding:9px 16px;font-size:13px;cursor:pointer;color:#888;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap}
 .tab.active{color:#1D9E75;border-bottom-color:#1D9E75;font-weight:500}
 .section{display:none}.section.active{display:block}
 .card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:14px 16px;margin-bottom:1rem}
-select{font-size:13px;padding:8px 12px;border:1px solid #333;border-radius:8px;background:#222;color:#e8e8e8}
+select{font-size:13px;padding:8px 10px;border:1px solid #333;border-radius:8px;background:#222;color:#e8e8e8;width:100%}
 select:focus{outline:none;border-color:#1D9E75}
 .btn{padding:7px 14px;font-size:12px;border:1px solid #333;border-radius:8px;background:#1a1a1a;color:#e8e8e8;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .btn:hover{background:#2a2a2a}
 .btn-green{background:#1D9E75;color:#fff;border-color:#0F6E56}.btn-green:hover{background:#0F6E56}
 .btn-red{background:#3d1a1a;color:#f08080;border-color:#5a2a2a}.btn-red:hover{background:#4d2020}
 .btn-sm{padding:4px 10px;font-size:11px}
-.btn-ghost{border:none;background:none;color:#666;padding:2px 6px;cursor:pointer;font-size:13px}.btn-ghost:hover{color:#E24B4A}
-.no-content{text-align:center;padding:3rem 1rem;color:#555;font-size:14px}
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.25rem}
-.stat-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:14px;text-align:center}
-.stat-val{font-size:24px;font-weight:600;color:#fff}
-.stat-lbl{font-size:11px;color:#666;margin-top:3px}
-
-/* Ejercicio colapsable */
-.ex-block{border:1px solid #2a2a2a;border-radius:12px;margin-bottom:10px;overflow:hidden;background:#1a1a1a}
-.ex-header{padding:12px 14px;background:#222;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;gap:8px;flex-wrap:wrap}
+.btn-ghost{border:none;background:none;color:#555;padding:2px 6px;cursor:pointer;font-size:13px}.btn-ghost:hover{color:#E24B4A}
+.no-content{text-align:center;padding:2.5rem 1rem;color:#555;font-size:14px}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
+.stat-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:12px 8px;text-align:center}
+.stat-val{font-size:22px;font-weight:600;color:#fff}
+.stat-lbl{font-size:10px;color:#666;margin-top:2px}
+.ex-block{border:1px solid #2a2a2a;border-radius:12px;margin-bottom:8px;overflow:hidden;background:#1a1a1a}
+.ex-header{padding:11px 12px;background:#222;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;gap:8px}
 .ex-header:hover{background:#282828}
-.ex-header-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
-.ex-chevron{font-size:12px;color:#666;transition:transform .2s;flex-shrink:0}
-.ex-chevron.open{transform:rotate(90deg)}
+.ex-header:active{background:#2e2e2e}
+.ex-header-left{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
 .ex-nombre{font-size:13px;font-weight:500;color:#e8e8e8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ex-meta{font-size:11px;color:#666;white-space:nowrap}
+.ex-meta{font-size:11px;color:#666;white-space:nowrap;flex-shrink:0}
 .ex-body{display:none;border-top:1px solid #2a2a2a}
-.ex-body.open{display:block}
-.ex-actions{padding:8px 14px;background:#1e1e1e;border-bottom:1px solid #2a2a2a;display:flex;gap:8px}
 .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.series-table{width:100%;border-collapse:collapse;font-size:12px;min-width:500px}
-.series-table th{padding:7px 8px;text-align:left;font-size:11px;color:#666;font-weight:500;background:#1e1e1e;border-bottom:1px solid #2a2a2a}
-.series-table td{padding:6px 8px;border-bottom:1px solid #1e1e1e;vertical-align:top;color:#e8e8e8}
+.series-table{width:100%;border-collapse:collapse;font-size:12px;min-width:460px}
+.series-table th{padding:6px 8px;text-align:left;font-size:11px;color:#666;font-weight:500;background:#1e1e1e;border-bottom:1px solid #2a2a2a}
+.series-table td{padding:6px 8px;border-bottom:1px solid #1e1e1e;vertical-align:middle;color:#e8e8e8}
 .series-table tr:last-child td{border-bottom:none}
-.series-table tr:hover td{background:#1e1e1e}
-.series-table input[type=number]{width:58px;padding:5px 4px;font-size:12px;border:1px solid #333;border-radius:6px;background:#111;color:#e8e8e8;text-align:center}
+.series-table input[type=number]{width:56px;padding:5px 4px;font-size:12px;border:1px solid #333;border-radius:6px;background:#111;color:#e8e8e8;text-align:center;-moz-appearance:textfield}
+.series-table input[type=number]::-webkit-inner-spin-button{opacity:0}
 .series-table input[type=number]:focus{outline:none;border-color:#1D9E75}
-.series-table textarea{width:100%;padding:5px 6px;font-size:11px;border:1px solid #333;border-radius:6px;background:#111;color:#e8e8e8;resize:none;height:34px}
+.series-table textarea{width:100%;padding:4px 6px;font-size:11px;border:1px solid #333;border-radius:6px;background:#111;color:#e8e8e8;resize:none;height:32px}
 .series-table textarea:focus{outline:none;border-color:#1D9E75}
-.tipo-select{font-size:11px;padding:4px 6px;border-radius:20px;cursor:pointer;font-weight:500;border:1px solid}
+.tipo-select{font-size:11px;padding:3px 6px;border-radius:20px;cursor:pointer;font-weight:500;border:1px solid;width:auto}
 .tipo-warmup{background:#0c2a3d;color:#5bb3e8;border-color:#1a4a6a}
 .tipo-top{background:#0d2b1a;color:#4cba7a;border-color:#1a4a28}
 .tipo-backoff{background:#2b1f08;color:#d4943a;border-color:#4a3010}
 .tipo-normal{background:#222;color:#aaa;border-color:#333}
 .tipo-fallo{background:#2b0d1a;color:#d45c8a;border-color:#4a1530}
-.drop-zone{padding:4px 0 2px}
-.drop-item{display:flex;align-items:center;gap:6px;margin-bottom:4px;padding:5px 8px;background:#111;border-radius:7px;border:1px solid #2a2a2a}
-.drop-label{font-size:10px;font-weight:600;color:#d45c8a;white-space:nowrap;min-width:42px}
+.drop-zone{padding:3px 0 2px}
+.drop-item{display:flex;align-items:center;gap:5px;margin-bottom:4px;padding:4px 7px;background:#111;border-radius:6px;border:1px solid #2a2a2a}
+.drop-label{font-size:10px;font-weight:600;color:#d45c8a;white-space:nowrap;min-width:40px}
 .drop-sep{font-size:11px;color:#555}
-.drop-item input[type=number]{width:50px;font-size:11px;padding:3px 4px;border:1px solid #333;border-radius:5px;background:#1a1a1a;color:#e8e8e8;text-align:center}
-.add-drop-btn{font-size:11px;padding:3px 8px;color:#d45c8a;border-color:#4a1530;background:#2b0d1a}.add-drop-btn:hover{background:#3a1020}
-.add-warmup-btn{font-size:11px;padding:3px 8px;color:#5bb3e8;border-color:#1a4a6a;background:#0c2a3d}.add-warmup-btn:hover{background:#0f3550}
-
-/* Calendario */
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:1rem}
-.cal-header{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
-.cal-day-name{text-align:center;font-size:11px;color:#666;padding:4px 0;font-weight:500}
-.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;cursor:pointer;border:1px solid transparent;color:#888;background:#1a1a1a;flex-direction:column;gap:2px}
+.drop-item input[type=number]{width:48px;font-size:11px;padding:3px 4px;border:1px solid #333;border-radius:5px;background:#1a1a1a;color:#e8e8e8;text-align:center}
+.add-drop-btn{font-size:10px;padding:2px 7px;color:#d45c8a;border-color:#4a1530;background:#2b0d1a;margin-top:2px}
+.add-warmup-btn{font-size:10px;padding:2px 7px;color:#5bb3e8;border-color:#1a4a6a;background:#0c2a3d}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:1rem}
+.cal-header-row{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px}
+.cal-day-name{text-align:center;font-size:10px;color:#666;padding:3px 0;font-weight:500}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:7px;font-size:12px;cursor:pointer;border:1px solid transparent;color:#888;background:#1a1a1a;flex-direction:column;gap:1px}
 .cal-day:hover{border-color:#333;color:#e8e8e8}
 .cal-day.has-session{background:#0d2b1a;border-color:#1a4a28;color:#4cba7a}
 .cal-day.today{border-color:#1D9E75;color:#1D9E75;font-weight:600}
 .cal-day.selected{background:#1D9E75;color:#fff;border-color:#1D9E75}
 .cal-day.empty{cursor:default;background:transparent;border:none}
-.cal-dot{width:5px;height:5px;border-radius:50%;background:#4cba7a}
+.cal-dot{width:4px;height:4px;border-radius:50%;background:#4cba7a}
 .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
-.cal-nav-title{font-size:15px;font-weight:500;color:#e8e8e8}
-.session-list{display:flex;flex-direction:column;gap:8px}
-.session-item{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.session-date-title{font-size:13px;font-weight:500;color:#e8e8e8}
-.session-sub{font-size:11px;color:#666;margin-top:2px}
-.session-actions{display:flex;gap:6px}
-
-/* Modal con scroll interno */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;align-items:flex-start;justify-content:center;padding:1rem}
+.cal-nav-title{font-size:14px;font-weight:500;color:#e8e8e8}
+.session-item{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.session-actions{display:flex;gap:6px;flex-shrink:0}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;align-items:flex-start;justify-content:center;padding:1rem;overflow-y:auto}
 .modal-bg.open{display:flex}
-.modal{background:#1a1a1a;border:1px solid #333;border-radius:14px;width:100%;max-width:640px;margin:auto;display:flex;flex-direction:column;max-height:90vh}
-.modal-header{padding:1rem 1.25rem;border-bottom:1px solid #2a2a2a;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.modal-header h3{font-size:15px;font-weight:500;color:#e8e8e8}
-.modal-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1rem 1.25rem;flex:1}
-.modal-footer{padding:.75rem 1.25rem;border-top:1px solid #2a2a2a;display:flex;justify-content:flex-end;flex-shrink:0}
-
-/* Ejercicio colapsable en modal */
+.modal{background:#1a1a1a;border:1px solid #333;border-radius:14px;width:100%;max-width:640px;margin:auto;display:flex;flex-direction:column;max-height:88vh}
+.modal-header{padding:.9rem 1.1rem;border-bottom:1px solid #2a2a2a;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-header h3{font-size:14px;font-weight:500;color:#e8e8e8}
+.modal-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1rem 1.1rem;flex:1}
+.modal-footer{padding:.7rem 1.1rem;border-top:1px solid #2a2a2a;display:flex;justify-content:flex-end;flex-shrink:0}
 .modal-ex{border:1px solid #2a2a2a;border-radius:10px;margin-bottom:8px;overflow:hidden}
-.modal-ex-header{padding:10px 12px;background:#222;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.modal-ex-header{padding:9px 12px;background:#222;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
 .modal-ex-header:hover{background:#282828}
 .modal-ex-body{display:none;overflow-x:auto}
 .modal-ex-body.open{display:block}
-
-.saving-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center;font-size:15px;color:#fff;gap:12px}
+.saving-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;align-items:center;justify-content:center;font-size:14px;color:#fff;gap:10px}
 .saving-overlay.show{display:flex}
-.spinner{width:20px;height:20px;border:2px solid #333;border-top-color:#1D9E75;border-radius:50%;animation:spin .7s linear infinite}
+.spinner{width:18px;height:18px;border:2px solid #333;border-top-color:#1D9E75;border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;display:none;z-index:999}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:9px 18px;border-radius:10px;font-size:13px;font-weight:500;display:none;z-index:999;white-space:nowrap}
 .toast-ok{background:#1D9E75;color:#fff}
 .toast-err{background:#8b2020;color:#fff}
+@media(max-width:480px){
+  .profile-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .profile-avatar{width:54px;height:54px;font-size:24px}
+  .series-table{min-width:400px}
+  .top-bar{gap:6px}
+  .stats-row{gap:6px}
+  .stat-val{font-size:18px}
+}
 </style>
 </head>
 <body>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="login-screen">
+  <div>
+    <div class="login-logo">🏋️ GymLog</div>
+  </div>
+  <p class="login-sub">¿Quién entrena hoy?</p>
+  <div class="profile-grid">
+    <div class="profile-card" onclick="login('julian')">
+      <div class="profile-avatar avatar-julian">💪</div>
+      <div class="profile-name">Julian</div>
+      <div class="profile-days">Upper / Lower</div>
+    </div>
+    <div class="profile-card" onclick="login('angela')">
+      <div class="profile-avatar avatar-angela">🌸</div>
+      <div class="profile-name">Angela</div>
+      <div class="profile-days">5 días</div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appScreen" class="app-screen">
 <div class="page">
   <div class="top-bar">
     <div>
-      <div class="logo">🏋️ GymLog</div>
+      <div class="logo">🏋️ GymLog <span id="userBadge" class="user-badge"></span></div>
       <div class="date-label" id="todayLabel"></div>
     </div>
+    <button class="logout-btn" onclick="logout()">← Cambiar perfil</button>
   </div>
   <div class="tab-bar">
     <button class="tab active" onclick="switchTab('log',this)">📅 Log del día</button>
     <button class="tab" onclick="switchTab('historial',this)">📂 Historial</button>
     <button class="tab" onclick="switchTab('plan',this)">📋 Plan</button>
   </div>
-
   <div id="sec-log" class="section active">
     <div class="card">
-      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-        <label style="font-size:13px;font-weight:500;white-space:nowrap">Día de hoy:</label>
-        <select id="routineSelect" style="flex:1;min-width:180px">
-          <option value="">— Selecciona el día —</option>
-        </select>
-        <button class="btn btn-green" onclick="guardarSesion()">💾 Guardar sesión</button>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <label style="font-size:13px;font-weight:500">Día de hoy:</label>
+        <select id="routineSelect"></select>
+        <button class="btn btn-green" style="width:100%;justify-content:center" onclick="guardarSesion()">💾 Guardar sesión</button>
       </div>
     </div>
     <div id="logContent"><div class="no-content">⬆️ Selecciona el día para comenzar</div></div>
   </div>
-
   <div id="sec-historial" class="section">
     <div class="card">
       <div class="cal-nav">
@@ -146,7 +181,7 @@ select:focus{outline:none;border-color:#1D9E75}
         <span class="cal-nav-title" id="calTitle"></span>
         <button class="btn btn-sm" onclick="cambiarMes(1)">Siguiente →</button>
       </div>
-      <div class="cal-header">
+      <div class="cal-header-row">
         <div class="cal-day-name">Dom</div><div class="cal-day-name">Lun</div>
         <div class="cal-day-name">Mar</div><div class="cal-day-name">Mié</div>
         <div class="cal-day-name">Jue</div><div class="cal-day-name">Vie</div>
@@ -156,21 +191,19 @@ select:focus{outline:none;border-color:#1D9E75}
     </div>
     <div id="sessionDetail"><div class="no-content" style="padding:1rem">Selecciona un día del calendario</div></div>
   </div>
-
   <div id="sec-plan" class="section"><div id="planContent"></div></div>
 </div>
+</div>
 
-<!-- MODAL VER SESIÓN -->
+<!-- MODAL -->
 <div class="modal-bg" id="viewModal">
   <div class="modal">
     <div class="modal-header">
-      <h3 id="modalTitle">👁 Detalle de sesión</h3>
+      <h3 id="modalTitle">👁 Detalle</h3>
       <button class="btn-ghost" onclick="cerrarModal()" style="font-size:18px">✕</button>
     </div>
     <div class="modal-body" id="modalBody"></div>
-    <div class="modal-footer">
-      <button class="btn" onclick="cerrarModal()">Cerrar</button>
-    </div>
+    <div class="modal-footer"><button class="btn" onclick="cerrarModal()">Cerrar</button></div>
   </div>
 </div>
 
@@ -186,66 +219,139 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const DAYS_ES=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 const now=new Date();
-document.getElementById('todayLabel').textContent=DAYS_ES[now.getDay()]+', '+now.getDate()+' de '+MONTHS[now.getMonth()]+' '+now.getFullYear();
 
 const TIPO_OPTS=['warmup','normal','top','backoff','fallo'];
 const TIPO_LABELS={warmup:'Calentamiento',normal:'Serie',top:'Top set',backoff:'Back off',fallo:'Fallo'};
 const TIPO_CLS={warmup:'tipo-warmup',normal:'tipo-normal',top:'tipo-top',backoff:'tipo-backoff',fallo:'tipo-fallo'};
 const tipoClsMap=TIPO_CLS;
 
-const RUTINA=[
-  {id:1,nombre:'Día 1 — Glúteo y Cuádriceps',ejercicios:[
-    {id:11,nombre:'Hip thrust en máquina',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:12,nombre:'Aductores',repsRef:'8 mín',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:13,nombre:'Sentadilla Smith',repsRef:'8-10',series:[{tipo:'warmup'},{tipo:'warmup'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:14,nombre:'Abducción inclinación 30°',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:15,nombre:'Extensión de cuádriceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:16,nombre:'Sentadilla búlgara',repsRef:'Fallo',series:[{tipo:'fallo'},{tipo:'fallo'}]},
-  ]},
-  {id:2,nombre:'Día 2 — Pecho / Hombro / Tríceps',ejercicios:[
-    {id:21,nombre:'Press inclinado mancuernas',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:22,nombre:'Peck deck',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:23,nombre:'Press militar',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:24,nombre:'Elevaciones laterales',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:25,nombre:'Extensión de tríceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:26,nombre:'Copa para tríceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-  ]},
-  {id:3,nombre:'Día 3 — Cuádriceps e Isquiotibiales',ejercicios:[
-    {id:31,nombre:'Curl tumbado',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:32,nombre:'Aductores',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:33,nombre:'Prensa',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:34,nombre:'Extensión de cuádriceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:35,nombre:'Curl sentado',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-  ]},
-  {id:4,nombre:'Día 4 — Espalda / Bíceps',ejercicios:[
-    {id:41,nombre:'Jalón al pecho',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:42,nombre:'Remo Gironda',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:43,nombre:'Jalón agarre supino',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:44,nombre:'Remo alto',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:45,nombre:'Curl de bíceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-  ]},
-  {id:5,nombre:'Día 5 — Glúteo e Isquiotibiales',ejercicios:[
-    {id:51,nombre:'Curl sentado',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:52,nombre:'Hip thrust en máquina',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:53,nombre:'Aductores',repsRef:'8 mín',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:54,nombre:'Abducción inclinación 30°',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:55,nombre:'Peso muerto rumano',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-    {id:56,nombre:'Curl martillo',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
-  ]},
-];
+// ── RUTINAS ──
+const RUTINAS={
+  angela:[
+    {id:1,nombre:'Día 1 — Glúteo y Cuádriceps',ejercicios:[
+      {id:11,nombre:'Hip thrust en máquina',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:12,nombre:'Aductores',repsRef:'8 mín',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:13,nombre:'Sentadilla Smith',repsRef:'8-10',series:[{tipo:'warmup'},{tipo:'warmup'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:14,nombre:'Abducción inclinación 30°',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:15,nombre:'Extensión de cuádriceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:16,nombre:'Sentadilla búlgara',repsRef:'Fallo',series:[{tipo:'fallo'},{tipo:'fallo'}]},
+    ]},
+    {id:2,nombre:'Día 2 — Pecho / Hombro / Tríceps',ejercicios:[
+      {id:21,nombre:'Press inclinado mancuernas',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:22,nombre:'Peck deck',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:23,nombre:'Press militar',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:24,nombre:'Elevaciones laterales',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:25,nombre:'Extensión de tríceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:26,nombre:'Copa para tríceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    ]},
+    {id:3,nombre:'Día 3 — Cuádriceps e Isquiotibiales',ejercicios:[
+      {id:31,nombre:'Curl tumbado',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:32,nombre:'Aductores',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:33,nombre:'Prensa',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:34,nombre:'Extensión de cuádriceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:35,nombre:'Curl sentado',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    ]},
+    {id:4,nombre:'Día 4 — Espalda / Bíceps',ejercicios:[
+      {id:41,nombre:'Jalón al pecho',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:42,nombre:'Remo Gironda',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:43,nombre:'Jalón agarre supino',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:44,nombre:'Remo alto',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:45,nombre:'Curl de bíceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    ]},
+    {id:5,nombre:'Día 5 — Glúteo e Isquiotibiales',ejercicios:[
+      {id:51,nombre:'Curl sentado',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:52,nombre:'Hip thrust en máquina',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:53,nombre:'Aductores',repsRef:'8 mín',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:54,nombre:'Abducción inclinación 30°',repsRef:'8-15',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:55,nombre:'Peso muerto rumano',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:56,nombre:'Curl martillo',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    ]},
+  ],
+  julian:[
+    {id:101,nombre:'Upper A (Día 1)',ejercicios:[
+      {id:1011,nombre:'Jalón al pecho',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1012,nombre:'Remo Gironda',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'}]},
+      {id:1013,nombre:'Pull over',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'}]},
+      {id:1014,nombre:'Predicador unilateral',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1015,nombre:'Elevaciones laterales',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1016,nombre:'Press militar',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1017,nombre:'Press plano en máquina',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1018,nombre:'Peck deck',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1019,nombre:'Extensión de tríceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    ]},
+    {id:102,nombre:'Lower A (Día 1)',ejercicios:[
+      {id:1021,nombre:'Curl sentado',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1022,nombre:'Aductores',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1023,nombre:'Sentadilla',repsRef:'8-10',series:[{tipo:'warmup'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1024,nombre:'Peso muerto',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1025,nombre:'Extensión de cuádriceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1026,nombre:'Abductores (opcional)',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    ]},
+    {id:103,nombre:'Upper B (Día 2)',ejercicios:[
+      {id:1031,nombre:'Press plano en máquina',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1032,nombre:'Peck deck',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1033,nombre:'Extensión de tríceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1034,nombre:'Elevaciones laterales',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1035,nombre:'Press militar',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1036,nombre:'Jalón al pecho',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1037,nombre:'Remo Gironda',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'}]},
+      {id:1038,nombre:'Pull over',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'}]},
+      {id:1039,nombre:'Predicador unilateral',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    ]},
+    {id:104,nombre:'Lower B (Día 2)',ejercicios:[
+      {id:1041,nombre:'Aductores',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1042,nombre:'Sentadilla',repsRef:'8-10',series:[{tipo:'warmup'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1043,nombre:'Curl acostado',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1044,nombre:'Extensión de cuádriceps',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1045,nombre:'Abductores (opcional)',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1046,nombre:'Peso muerto',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+    ]},
+    {id:105,nombre:'Fortalecimiento (opcional)',ejercicios:[
+      {id:1051,nombre:'Lumbares',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1052,nombre:'Core',repsRef:'8-10',series:[{tipo:'normal'},{tipo:'normal'},{tipo:'normal'},{tipo:'normal'}]},
+      {id:1053,nombre:'Cardio 40 min',repsRef:'—',series:[{tipo:'normal'}]},
+    ]},
+  ]
+};
 
+let currentUser=null;
 let calYear=now.getFullYear(),calMonth=now.getMonth(),sesionesDelMes=[];
+
+// ── LOGIN ──
+function login(user){
+  currentUser=user;
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('appScreen').classList.add('active');
+  const badge=document.getElementById('userBadge');
+  badge.textContent=user==='julian'?'💪 Julian':'🌸 Angela';
+  badge.className='user-badge '+(user==='julian'?'badge-julian':'badge-angela');
+  document.getElementById('todayLabel').textContent=DAYS_ES[now.getDay()]+', '+now.getDate()+' de '+MONTHS[now.getMonth()]+' '+now.getFullYear();
+  populateSelect();
+  switchTab('log',document.querySelector('.tab'));
+}
+
+function logout(){
+  currentUser=null;
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('appScreen').classList.remove('active');
+  document.getElementById('logContent').innerHTML='<div class="no-content">⬆️ Selecciona el día para comenzar</div>';
+  sesionesDelMes=[];
+}
 
 function populateSelect(){
   const sel=document.getElementById('routineSelect');
-  RUTINA.forEach(r=>{sel.innerHTML+=`<option value="${r.id}">${r.nombre}</option>`;});
+  const rutinas=RUTINAS[currentUser]||[];
+  sel.innerHTML='<option value="">— Selecciona el día —</option>';
+  rutinas.forEach(r=>{sel.innerHTML+=`<option value="${r.id}">${r.nombre}</option>`;});
   sel.onchange=()=>initLog();
 }
 
+// ── LOG ──
 function initLog(){
   const id=parseInt(document.getElementById('routineSelect').value);
   if(!id){document.getElementById('logContent').innerHTML='<div class="no-content">⬆️ Selecciona el día para comenzar</div>';return;}
-  renderLog(RUTINA.find(x=>x.id===id));
+  const rutinas=RUTINAS[currentUser]||[];
+  renderLog(rutinas.find(x=>x.id===id));
 }
 
 function renderLog(r){
@@ -260,22 +366,22 @@ function renderLog(r){
     html+=`<div class="ex-block" id="block_${ex.id}">
       <div class="ex-header" onclick="toggleEx(${ex.id})">
         <div class="ex-header-left">
-          <span id="chev_${ex.id}" class="ex-chevron" style="display:inline-block;transition:transform .2s;${isOpen?'transform:rotate(90deg)':''}">▶</span>
+          <span id="chev_${ex.id}" style="font-size:11px;color:#666;display:inline-block;transition:transform .2s;${isOpen?'transform:rotate(90deg)':''}">▶</span>
           <span class="ex-nombre">${ex.nombre}</span>
-          <span class="ex-meta">${ex.series.length} series · ${ex.repsRef}</span>
+          <span class="ex-meta">${ex.series.length}s · ${ex.repsRef}</span>
         </div>
-        <button class="btn add-warmup-btn btn-sm" onclick="event.stopPropagation();addWarmup(${ex.id})">+ calentamiento</button>
+        <button class="btn add-warmup-btn btn-sm" onclick="event.stopPropagation();addWarmup(${ex.id})">+ cal</button>
       </div>
       <div id="body_${ex.id}" class="ex-body" style="display:${isOpen?'block':'none'}">
         <div class="table-wrap"><table class="series-table">
           <thead><tr>
-            <th style="width:28px">#</th>
-            <th style="width:128px">Tipo</th>
-            <th style="width:64px">Peso kg</th>
-            <th style="width:56px">Reps</th>
-            <th>Drop sets</th>
-            <th style="width:110px">Comentario</th>
-            <th style="width:28px"></th>
+            <th style="width:24px">#</th>
+            <th style="width:120px">Tipo</th>
+            <th style="width:60px">Peso</th>
+            <th style="width:54px">Reps</th>
+            <th>Drops</th>
+            <th style="width:100px">Nota</th>
+            <th style="width:24px"></th>
           </tr></thead>
           <tbody id="ex_${ex.id}">`;
     ex.series.forEach((s,si)=>{html+=serieRowHTML(ex.id,si,s.tipo);});
@@ -285,10 +391,11 @@ function renderLog(r){
 }
 
 function toggleEx(exId){
-
-
-
-
+  const body=document.getElementById('body_'+exId);
+  const chev=document.getElementById('chev_'+exId);
+  const isOpen=body.style.display==='block';
+  body.style.display=isOpen?'none':'block';
+  chev.style.transform=isOpen?'rotate(0deg)':'rotate(90deg)';
 }
 
 function serieRowHTML(exId,si,tipo){
@@ -304,14 +411,20 @@ function serieRowHTML(exId,si,tipo){
       <button class="btn add-drop-btn btn-sm" onclick="addDrop('${exId}','${si}')">+ drop</button>
     </td>
     <td><textarea placeholder="notas..."></textarea></td>
-    <td><button class="btn-ghost" style="color:#555;font-size:14px" onclick="eliminarFila(this)" title="Eliminar serie">✕</button></td>
+    <td><button class="btn-ghost" style="font-size:13px" onclick="eliminarFila(this)" title="Eliminar">✕</button></td>
   </tr>`;
+}
+
+function eliminarFila(btn){
+  const row=btn.closest('tr');
+  const tbody=row.closest('tbody');
+  row.remove();
+  renumberRows(tbody);
+  calcVolume();
 }
 
 function addWarmup(exId){
   const tbody=document.getElementById('ex_'+exId);
-  // open the block first
-  const block=tbody.closest('.ex-block');
   document.getElementById('body_'+exId).style.display='block';
   document.getElementById('chev_'+exId).style.transform='rotate(90deg)';
   const rows=[...tbody.querySelectorAll('tr')];
@@ -326,14 +439,6 @@ function addWarmup(exId){
   }
   if(!inserted)tbody.insertBefore(tr,rows[0]||null);
   renumberRows(tbody);
-}
-
-function eliminarFila(btn){
-  const row=btn.closest('tr');
-  const tbody=row.closest('tbody');
-  row.remove();
-  renumberRows(tbody);
-  calcVolume();
 }
 
 function renumberRows(tbody){
@@ -375,8 +480,7 @@ function calcVolume(){
     if(p&&r)vol+=p*r;
     row.querySelectorAll('.drop-item').forEach(d=>{
       const di=d.querySelectorAll('input[type=number]');
-      const dp=parseFloat(di[0]?.value)||0,dr=parseInt(di[1]?.value)||0;
-      if(dp&&dr)vol+=dp*dr;
+      if(parseFloat(di[0]?.value)&&parseInt(di[1]?.value))vol+=parseFloat(di[0].value)*parseInt(di[1].value);
     });
   });
   const el=document.getElementById('volTotal');
@@ -386,7 +490,8 @@ function calcVolume(){
 async function guardarSesion(){
   const diaId=parseInt(document.getElementById('routineSelect').value);
   if(!diaId){showToast('Selecciona un día primero','err');return;}
-  const r=RUTINA.find(x=>x.id===diaId);
+  const rutinas=RUTINAS[currentUser]||[];
+  const r=rutinas.find(x=>x.id===diaId);
   const fecha=now.toISOString().slice(0,10);
   const series=[];
   r.ejercicios.forEach(ex=>{
@@ -410,7 +515,7 @@ async function guardarSesion(){
   });
   document.getElementById('savingOverlay').classList.add('show');
   try{
-    const{data:sesData,error:sesErr}=await sb.from('sesiones').insert({fecha,dia_id:diaId,dia_nombre:r.nombre}).select().single();
+    const{data:sesData,error:sesErr}=await sb.from('sesiones').insert({fecha,dia_id:diaId,dia_nombre:r.nombre,usuario:currentUser}).select().single();
     if(sesErr)throw sesErr;
     const sesId=sesData.id;
     for(const s of series){
@@ -423,7 +528,7 @@ async function guardarSesion(){
       if(s.drops.length)await sb.from('drop_sets').insert(s.drops.map(d=>({...d,serie_id:sData.id})));
     }
     document.getElementById('routineSelect').value='';
-    document.getElementById('logContent').innerHTML='<div class="no-content">✅ Sesión guardada. Selecciona el próximo día cuando quieras.</div>';
+    document.getElementById('logContent').innerHTML='<div class="no-content">✅ Sesión guardada. ¡Buen trabajo!</div>';
     sesionesDelMes=[];
     showToast('✓ Sesión guardada','ok');
   }catch(e){
@@ -439,7 +544,7 @@ async function cargarSesionesDelMes(){
   const y=calYear,m=calMonth;
   const desde=`${y}-${String(m+1).padStart(2,'0')}-01`;
   const hasta=`${y}-${String(m+1).padStart(2,'0')}-${new Date(y,m+1,0).getDate()}`;
-  const{data,error}=await sb.from('sesiones').select('id,fecha,dia_nombre').gte('fecha',desde).lte('fecha',hasta).order('fecha');
+  const{data,error}=await sb.from('sesiones').select('id,fecha,dia_nombre').eq('usuario',currentUser).gte('fecha',desde).lte('fecha',hasta).order('fecha');
   if(!error)sesionesDelMes=data||[];
 }
 
@@ -466,15 +571,15 @@ async function selectDay(dateStr){
   const day=parseInt(dateStr.split('-')[2]);
   const el=document.querySelectorAll('.cal-grid .cal-day:not(.empty)')[day-1];
   if(el)el.classList.add('selected');
-  const{data,error}=await sb.from('sesiones').select('*').eq('fecha',dateStr).order('creado_at');
+  const{data,error}=await sb.from('sesiones').select('*').eq('usuario',currentUser).eq('fecha',dateStr).order('creado_at');
   const detail=document.getElementById('sessionDetail');
   if(error||!data||!data.length){detail.innerHTML=`<div class="no-content" style="padding:1rem">Sin sesiones el ${dateStr}</div>`;return;}
-  let html=`<div style="font-size:12px;color:#888;margin-bottom:8px">${dateStr}</div><div class="session-list">`;
+  let html=`<div style="font-size:12px;color:#888;margin-bottom:8px">${dateStr}</div>`;
   data.forEach(s=>{
     html+=`<div class="session-item">
       <div>
-        <div class="session-date-title">${s.dia_nombre}</div>
-        <div class="session-sub">${new Date(s.creado_at).toLocaleString('es')}</div>
+        <div style="font-size:13px;font-weight:500;color:#e8e8e8">${s.dia_nombre}</div>
+        <div style="font-size:11px;color:#666;margin-top:2px">${new Date(s.creado_at).toLocaleString('es')}</div>
       </div>
       <div class="session-actions">
         <button class="btn btn-sm" onclick="verSesion('${s.id}','${s.dia_nombre}')">👁 Ver</button>
@@ -482,7 +587,7 @@ async function selectDay(dateStr){
       </div>
     </div>`;
   });
-  detail.innerHTML=html+'</div>';
+  detail.innerHTML=html;
 }
 
 async function verSesion(sesId,titulo){
@@ -493,21 +598,21 @@ async function verSesion(sesId,titulo){
   document.getElementById('modalTitle').textContent='👁 '+titulo;
   let html='';
   Object.entries(grupos).forEach(([nombre,srs],gi)=>{
-    const openClass=gi===0?' open':'';
+    const isOpen=gi===0;
     html+=`<div class="modal-ex">
       <div class="modal-ex-header" onclick="toggleModalEx(this)">
-        <span style="font-size:11px;color:#666;margin-right:4px;transition:transform .2s${openClass?';transform:rotate(90deg)':''}">▶</span>
+        <span style="font-size:11px;color:#666;transition:transform .2s;display:inline-block;${isOpen?'transform:rotate(90deg)':''}">▶</span>
         <span style="font-size:13px;font-weight:500;color:#e8e8e8;flex:1">${nombre}</span>
         <span style="font-size:11px;color:#666">${srs.length} series</span>
       </div>
-      <div class="modal-ex-body${openClass}">
+      <div class="modal-ex-body${isOpen?' open':''}">
         <table class="series-table"><thead><tr>
-          <th style="width:28px">#</th><th style="width:110px">Tipo</th>
-          <th style="width:64px">Peso kg</th><th style="width:56px">Reps</th>
-          <th>Drops</th><th>Comentario</th>
+          <th style="width:24px">#</th><th style="width:110px">Tipo</th>
+          <th style="width:60px">Peso</th><th style="width:54px">Reps</th>
+          <th>Drops</th><th>Nota</th>
         </tr></thead><tbody>`;
     srs.forEach((s,i)=>{
-      const drops=(s.drop_sets||[]).map((d,di)=>`<span style="font-size:10px;color:#d45c8a;background:#2b0d1a;padding:2px 6px;border-radius:4px;margin-right:3px;white-space:nowrap;display:inline-block;margin-bottom:2px">Drop ${di+1}: ${d.peso||'—'}kg×${d.reps||'—'}</span>`).join('');
+      const drops=(s.drop_sets||[]).map((d,di)=>`<span style="font-size:10px;color:#d45c8a;background:#2b0d1a;padding:2px 5px;border-radius:4px;margin-right:2px;white-space:nowrap;display:inline-block;margin-bottom:2px">D${di+1}:${d.peso||'—'}×${d.reps||'—'}</span>`).join('');
       html+=`<tr>
         <td style="text-align:center;color:#555;font-size:11px">${i+1}</td>
         <td><span class="tipo-select ${TIPO_CLS[s.tipo]||'tipo-normal'}" style="cursor:default;display:inline-block">${TIPO_LABELS[s.tipo]||s.tipo}</span></td>
@@ -525,7 +630,7 @@ async function verSesion(sesId,titulo){
 
 function toggleModalEx(header){
   const chev=header.querySelector('span');
-
+  const body=header.nextElementSibling;
   const isOpen=body.classList.toggle('open');
   chev.style.transform=isOpen?'rotate(90deg)':'rotate(0deg)';
 }
@@ -552,23 +657,24 @@ function cambiarMes(dir){
 }
 
 function renderPlan(){
+  const rutinas=RUTINAS[currentUser]||[];
   let html='';
-  RUTINA.forEach(r=>{
-    html+=`<div style="border:1px solid #2a2a2a;border-radius:12px;margin-bottom:12px;overflow:hidden">
+  rutinas.forEach(r=>{
+    html+=`<div style="border:1px solid #2a2a2a;border-radius:12px;margin-bottom:10px;overflow:hidden">
       <div style="padding:10px 14px;background:#222;font-size:13px;font-weight:500;color:#e8e8e8;border-bottom:1px solid #2a2a2a">
         📅 ${r.nombre} <span style="font-size:11px;font-weight:400;color:#666">${r.ejercicios.length} ejercicios</span>
       </div>
       <table style="width:100%;border-collapse:collapse;font-size:12px">
         <thead><tr>
-          <th style="padding:6px 14px;text-align:left;font-size:11px;color:#666;background:#1a1a1a;border-bottom:1px solid #222">Ejercicio</th>
-          <th style="padding:6px 14px;text-align:center;font-size:11px;color:#666;background:#1a1a1a;border-bottom:1px solid #222;width:60px">Series</th>
-          <th style="padding:6px 14px;text-align:center;font-size:11px;color:#666;background:#1a1a1a;border-bottom:1px solid #222;width:80px">Reps</th>
+          <th style="padding:6px 12px;text-align:left;font-size:11px;color:#666;background:#1a1a1a;border-bottom:1px solid #222">Ejercicio</th>
+          <th style="padding:6px 12px;text-align:center;font-size:11px;color:#666;background:#1a1a1a;border-bottom:1px solid #222;width:55px">Series</th>
+          <th style="padding:6px 12px;text-align:center;font-size:11px;color:#666;background:#1a1a1a;border-bottom:1px solid #222;width:70px">Reps</th>
         </tr></thead><tbody>`;
     r.ejercicios.forEach((ex,i)=>{
       html+=`<tr style="${i<r.ejercicios.length-1?'border-bottom:1px solid #1e1e1e':''}">
-        <td style="padding:8px 14px;color:#ccc">${ex.nombre}</td>
-        <td style="padding:8px 14px;text-align:center;color:#666">${ex.series.length}</td>
-        <td style="padding:8px 14px;text-align:center;color:#666">${ex.repsRef}</td>
+        <td style="padding:7px 12px;color:#ccc">${ex.nombre}</td>
+        <td style="padding:7px 12px;text-align:center;color:#666">${ex.series.length}</td>
+        <td style="padding:7px 12px;text-align:center;color:#666">${ex.repsRef}</td>
       </tr>`;
     });
     html+=`</tbody></table></div>`;
@@ -590,8 +696,6 @@ function switchTab(t,el){
   if(t==='historial')renderCalendar();
   if(t==='plan')renderPlan();
 }
-
-populateSelect();
 </script>
 </body>
 </html>
